@@ -3,6 +3,7 @@ using Gold.Redis.Common.Models.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,19 +14,17 @@ namespace Gold.Redis.LowLevelClient.Communication
     public class SocketsConnectionsContainer : IConnectionsContainer
     {
         private readonly RedisConnectionConfiguration _configuration;
-        private readonly Random _random;
         private readonly ConcurrentDictionary<Socket, ManualResetEventSlim> _sockets;
 
         public SocketsConnectionsContainer(RedisConnectionConfiguration configuration)
         {
-            _random = new Random();
             _configuration = configuration;
 
             _sockets = new ConcurrentDictionary<Socket, ManualResetEventSlim>();
         }
         public async Task<ISocketContainer> GetSocket()
         {
-            var openPair = GetFreeToUsePair();
+            var openPair = await GetFreeToUsePair();
             openPair.Value.Wait();
 
             if (openPair.Key.Connected)
@@ -40,7 +39,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             _sockets[socket].Set();
         }
 
-        private KeyValuePair<Socket, ManualResetEventSlim> GetFreeToUsePair()
+        private async Task<KeyValuePair<Socket, ManualResetEventSlim>> GetFreeToUsePair()
         {
             if (_sockets.Count < _configuration.MaxConnections)
             {
@@ -54,16 +53,26 @@ namespace Gold.Redis.LowLevelClient.Communication
                     return pair;
                 }
             }
-
-            //All of the sockets are is use, chose random socket and wait
-            var randomValue = _random.Next(_configuration.MaxConnections);
-            return _sockets.ToArray()[randomValue];
+            
+            return await WaitUntilSocketIsFree();
         }
 
         private async Task<Socket> Connect(Socket socket)
         {
             await socket.ConnectAsync(_configuration.Host, _configuration.Port);
             return socket;
+        }
+
+        private async Task<KeyValuePair<Socket, ManualResetEventSlim>> WaitUntilSocketIsFree()
+        {
+            var cancellationToken = new CancellationTokenSource();
+            var freeSocket = await Task.WhenAny(_sockets.Select(socket => Task.Run(() =>
+            {
+                socket.Value.Wait(cancellationToken.Token);
+                return socket;
+            }, cancellationToken.Token)));
+            cancellationToken.Cancel();
+            return await freeSocket;
         }
 
         private void AddSocket()
