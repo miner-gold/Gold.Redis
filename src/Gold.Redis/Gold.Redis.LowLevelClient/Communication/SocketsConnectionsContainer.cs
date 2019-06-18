@@ -22,16 +22,6 @@ namespace Gold.Redis.LowLevelClient.Communication
             _configuration = configuration;
 
             _sockets = new ConcurrentDictionary<Socket, ManualResetEventSlim>();
-
-            for (int i = 0; i < configuration.MaxConnections; i++)
-            {
-                _sockets.TryAdd(
-                    new Socket(
-                    AddressFamily.InterNetwork,
-                    SocketType.Stream,
-                    ProtocolType.Tcp),
-                    new ManualResetEventSlim(true));
-            }
         }
         public async Task<ISocketContainer> GetSocket()
         {
@@ -52,7 +42,11 @@ namespace Gold.Redis.LowLevelClient.Communication
 
         private KeyValuePair<Socket, ManualResetEventSlim> GetFreeToUsePair()
         {
-            bool found = false;
+            if (_sockets.Count < _configuration.MaxConnections)
+            {
+                AddSocket();
+            }
+
             foreach (var pair in _sockets)
             {
                 if (pair.Value.IsSet)
@@ -70,6 +64,16 @@ namespace Gold.Redis.LowLevelClient.Communication
         {
             await socket.ConnectAsync(_configuration.Host, _configuration.Port);
             return socket;
+        }
+
+        private void AddSocket()
+        {
+            _sockets.TryAdd(
+                new Socket(
+                    AddressFamily.InterNetwork,
+                    SocketType.Stream,
+                    ProtocolType.Tcp),
+                new ManualResetEventSlim(true));
         }
 
         public void Dispose()
