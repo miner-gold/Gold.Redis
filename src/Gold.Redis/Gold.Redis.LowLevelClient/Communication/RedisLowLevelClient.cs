@@ -18,20 +18,22 @@ namespace Gold.Redis.LowLevelClient.Communication
 
         public async Task<string> ExecuteCommand(string command)
         {
-            var socket = await _connections.GetSocket();
-            try
+            using (var socketContainer = await _connections.GetSocket())
             {
-                var bytes = Encoding.ASCII.GetBytes(command);
-                var bytesAsArraySegment = new ArraySegment<byte>(bytes);
-                var sendResult = await socket.SendAsync(bytesAsArraySegment, SocketFlags.None);
-                using (var bufferStream = new BufferedStream(new NetworkStream(socket), 16 * 1024))
+                try
                 {
-                    return ReadResponseFromStream(bufferStream);
+                    var bytes = Encoding.ASCII.GetBytes(command);
+                    var bytesAsArraySegment = new ArraySegment<byte>(bytes);
+                    var sendResult = await socketContainer.Socket.SendAsync(bytesAsArraySegment, SocketFlags.None);
+                    using (var bufferStream = new BufferedStream(new NetworkStream(socketContainer.Socket), 16 * 1024))
+                    {
+                        return ReadResponseFromStream(bufferStream);
+                    }
                 }
-            }
-            finally
-            {
-                _connections.FreeSocket(socket);
+                catch(Exception)
+                {
+                    throw;
+                }
             }
         }
 
