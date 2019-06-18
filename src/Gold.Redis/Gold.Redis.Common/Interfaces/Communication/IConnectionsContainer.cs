@@ -9,7 +9,7 @@ namespace Gold.Redis.Common.Interfaces.Communication
 {
     public interface IConnectionsContainer : IDisposable
     {
-        Task<Socket> GetSocket();
+        Task<ISocketContainer> GetSocket();
 
         void FreeSocket(Socket socket);
     }

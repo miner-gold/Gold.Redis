@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
-    public class SocketsConnectionsContainer : IConnectionsContainer, IDisposable
+    public class SocketsConnectionsContainer : IConnectionsContainer
     {
         private readonly RedisConnectionConfiguration _configuration;
         private readonly Random _random;
@@ -33,16 +33,16 @@ namespace Gold.Redis.LowLevelClient.Communication
                     new ManualResetEventSlim(true));
             }
         }
-        public async Task<Socket> GetSocket()
+        public async Task<ISocketContainer> GetSocket()
         {
             var openPair = GetFreeToUsePair();
             openPair.Value.Wait();
 
             if (openPair.Key.Connected)
             {
-                return openPair.Key;
+                return new SocketContainer(openPair.Key, this);
             }
-            return await Connect(openPair.Key);
+            return new SocketContainer(await Connect(openPair.Key), this);
         }
 
         public void FreeSocket(Socket socket)
