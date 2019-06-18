@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gold.Redis.Common", "Gold.Redis.Common\Gold.Redis.Common.csproj", "{5C4E1785-742A-4BB7-8E5F-507B55DB8A7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gold.Redis.Common", "Gold.Redis.Common\Gold.Redis.Common.csproj", "{5C4E1785-742A-4BB7-8E5F-507B55DB8A7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gold.Redis.LowLevelClient", "Gold.Redis.LowLevelClient\Gold.Redis.LowLevelClient.csproj", "{4385193F-FA62-4475-ACAD-E9DF7CFB1162}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gold.Redis.LowLevelClient", "Gold.Redis.LowLevelClient\Gold.Redis.LowLevelClient.csproj", "{4385193F-FA62-4475-ACAD-E9DF7CFB1162}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gold.Redis.HighLevelClient", "Gold.Redis.HighLevelClient\Gold.Redis.HighLevelClient.csproj", "{8C11175B-3DF1-469B-8131-DE36C169FD9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gold.Redis.HighLevelClient", "Gold.Redis.HighLevelClient\Gold.Redis.HighLevelClient.csproj", "{8C11175B-3DF1-469B-8131-DE36C169FD9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gold.Redis.IntegrationsTests", "Gold.Redis.IntegrationsTests\Gold.Redis.IntegrationsTests.csproj", "{95F4CB24-2E96-4083-97AC-D7E57AF0701E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{8C11175B-3DF1-469B-8131-DE36C169FD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C11175B-3DF1-469B-8131-DE36C169FD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C11175B-3DF1-469B-8131-DE36C169FD9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
