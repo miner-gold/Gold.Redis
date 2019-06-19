@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Gold.Redis.LowLevelClient.Parsers;
 
 namespace Gold.Redis.IntegrationsTests
 {
     [TestFixture]
-    public class RedisLowLevelClientInegrationsTests
+    public class RedisLowLevelClientIntegrationsTests
     {
         private RedisLowLevelClient _client;
 
@@ -23,20 +25,20 @@ namespace Gold.Redis.IntegrationsTests
                         Host = "localhost",
                         Port = 6379,
                         MaxConnections = 4
-                    }));
+                    }), new RequestBuilder(), new ResponseParser());
         }
 
         [Test]
         public async Task ExecuteCommand_SetKey_ShouldReturnTrue()
         {
             //Arrange 
-            var command = "*3\r\n$3\r\nSET\r\n$1\r\na\r\n$2\r\n10\r\n";
+            var command = $"SET {Guid.NewGuid()} {Guid.NewGuid()}";
 
             //Act
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            Assert.AreEqual("+OK",results);
+            results.Should().Be("+OK");
         }
     }
 }
