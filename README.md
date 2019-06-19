@@ -1,4 +1,4 @@
-# Gold
+# Gold Redis C# client
 
 ![icon](https://raw.githubusercontent.com/TomerGold1998/Gold.Redis/master/favicon.ico)
 
