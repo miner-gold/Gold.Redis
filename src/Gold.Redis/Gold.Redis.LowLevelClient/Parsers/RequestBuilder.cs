@@ -8,16 +8,18 @@ namespace Gold.Redis.LowLevelClient.Parsers
 {
     public class RequestBuilder : IRequestBuilder
     {
-
         public string Build(string request)
         {
-            var splicedCommand = request.Split(' ');
+            var seperatedCommands = request.Split(' ');
             var builder = new StringBuilder();
-            builder.Append($"{RequestCommandPrefixes.Array}{splicedCommand.Length}{Constants.CrLf}");
-            foreach (var splice in splicedCommand)
+
+            var requestStartString = $"{RequestCommandPrefixes.Array}{seperatedCommands.Length}{Constants.CrLf}";
+            builder.Append(requestStartString);
+
+            foreach (var commandContent in seperatedCommands)
             {
-                builder.Append(
-                    $"{RequestCommandPrefixes.BulkString}{splice.Length}{Constants.CrLf}{splice}{Constants.CrLf}");
+                var command = $"{RequestCommandPrefixes.BulkString}{commandContent.Length}{Constants.CrLf}{commandContent}{Constants.CrLf}";
+                builder.Append(command);
             }
 
             return builder.ToString();
