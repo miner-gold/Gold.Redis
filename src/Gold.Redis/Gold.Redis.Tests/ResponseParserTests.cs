@@ -6,7 +6,7 @@ using FluentAssertions;
 using Gold.Redis.LowLevelClient.Parsers;
 using NUnit.Framework;
 
-namespace Gold.Redis.IntegrationsTests
+namespace Gold.Redis.Tests
 {
     [TestFixture]
     public class ResponseParserTests

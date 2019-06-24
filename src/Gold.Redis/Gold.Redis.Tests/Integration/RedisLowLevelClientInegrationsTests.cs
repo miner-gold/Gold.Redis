@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.LowLevelClient.Parsers;
 
-namespace Gold.Redis.IntegrationsTests
+namespace Gold.Redis.Tests.Integration
 {
     [TestFixture]
     public class RedisLowLevelClientIntegrationsTests
@@ -29,7 +29,20 @@ namespace Gold.Redis.IntegrationsTests
         }
 
         [Test]
-        public async Task ExecuteCommand_SetKey_ShouldReturnTrue()
+        public async Task ExecuteCommand_Ping_ShouldReturnPong()
+        {
+            //Arrange 
+            var command = "PING";
+
+            //Act
+            var results = await _client.ExecuteCommand(command);
+
+            //Assert
+            results.Should().Be("+PONG");
+        }
+
+        [Test]
+        public async Task ExecuteCommand_SetKey_ShouldReturnOk()
         {
             //Arrange 
             var command = $"SET {Guid.NewGuid()} {Guid.NewGuid()}";

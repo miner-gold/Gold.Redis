@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gold.Redis.LowLevelClient",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gold.Redis.HighLevelClient", "Gold.Redis.HighLevelClient\Gold.Redis.HighLevelClient.csproj", "{8C11175B-3DF1-469B-8131-DE36C169FD9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gold.Redis.IntegrationsTests", "Gold.Redis.IntegrationsTests\Gold.Redis.IntegrationsTests.csproj", "{95F4CB24-2E96-4083-97AC-D7E57AF0701E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gold.Redis.Tests", "Gold.Redis.Tests\Gold.Redis.Tests.csproj", "{5563918F-AC9D-4809-9C1B-CC88D9EF69BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{8C11175B-3DF1-469B-8131-DE36C169FD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C11175B-3DF1-469B-8131-DE36C169FD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C11175B-3DF1-469B-8131-DE36C169FD9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95F4CB24-2E96-4083-97AC-D7E57AF0701E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5563918F-AC9D-4809-9C1B-CC88D9EF69BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5563918F-AC9D-4809-9C1B-CC88D9EF69BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5563918F-AC9D-4809-9C1B-CC88D9EF69BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5563918F-AC9D-4809-9C1B-CC88D9EF69BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
