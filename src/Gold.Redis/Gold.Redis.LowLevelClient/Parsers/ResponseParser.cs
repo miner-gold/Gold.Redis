@@ -1,43 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Gold.Redis.Common;
 using Gold.Redis.Common.Interfaces.Parsers;
 
 namespace Gold.Redis.LowLevelClient.Parsers
 {
     public class ResponseParser : IResponseParser
     {
-        public string Parse(Stream stream)
+        public async Task<string> Parse(StreamReader stream)
         {
-            var stringBuilder = new StringBuilder();
-            int current;
-            var prev = default(char);
-            while ((current = stream.ReadByte()) != -1)
+            var firstChar = (char) stream.Read();
+            switch (firstChar)
             {
-                var c = (char)current;
-                if (prev == '\r' && c == '\n') // reach at TerminateLine
-                {
-                    break;
-                }
-
-                if (prev == '\r' && c == '\r')
-                {
-                    stringBuilder.Append(prev); // append prev '\r'
-                    continue;
-                }
-
-                if (c == '\r')
-                {
-                    prev = c; // not append '\r'
-                    continue;
-                }
-
-                prev = c;
-                stringBuilder.Append(c);
+                case CommandPrefixes.SimpleString:
+                    return $"{await stream.ReadLineAsync()}";
+                case CommandPrefixes.BulkString:
+                    var responseLength = await stream.ReadLineAsync();
+                    return $"{await stream.ReadLineAsync()}";
+                default:
+                    return "";
             }
-
-            return stringBuilder.ToString();
         }
     }
 }
