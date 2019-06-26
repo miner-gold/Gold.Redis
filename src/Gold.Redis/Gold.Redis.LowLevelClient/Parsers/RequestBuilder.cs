@@ -10,15 +10,15 @@ namespace Gold.Redis.LowLevelClient.Parsers
     {
         public string Build(string request)
         {
-            var seperatedCommands = request.Split(' ');
+            var separatedCommands = request.Split(' ');
             var builder = new StringBuilder();
 
-            var requestStartString = $"{RequestCommandPrefixes.Array}{seperatedCommands.Length}{Constants.CrLf}";
+            var requestStartString = $"{CommandPrefixes.Array}{separatedCommands.Length}{Constants.CrLf}";
             builder.Append(requestStartString);
 
-            foreach (var commandContent in seperatedCommands)
+            foreach (var commandContent in separatedCommands)
             {
-                var command = $"{RequestCommandPrefixes.BulkString}{commandContent.Length}{Constants.CrLf}{commandContent}{Constants.CrLf}";
+                var command = $"{CommandPrefixes.BulkString}{commandContent.Length}{Constants.CrLf}{commandContent}{Constants.CrLf}";
                 builder.Append(command);
             }
 
