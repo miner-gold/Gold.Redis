@@ -6,19 +6,15 @@ namespace Gold.Redis.Common
 {
     public static class Constants
     {
-        public static readonly string CrLf = "\r\n";
+        public const string CrLf = "\r\n";
     }
 
-    public static class ResponseCommandPrefixes
+    public static class CommandPrefixes
     {
-        public static readonly char SimpleString = '+';
-        public static readonly char Error = '-';
-        public static readonly char Integer = ':';
-    }
-
-    public static class RequestCommandPrefixes
-    {
-        public static readonly char BulkString = '$';
-        public static readonly char Array = '*';
+        public const char SimpleString = '+';
+        public const char Error = '-';
+        public const char Integer = ':';
+        public const char BulkString = '$';
+        public const char Array = '*';
     }
 }
