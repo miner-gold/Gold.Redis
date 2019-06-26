@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.LowLevelClient.Parsers;
 using NUnit.Framework;
@@ -20,14 +21,14 @@ namespace Gold.Redis.Tests
         }
 
         [Test]
-        public void ParseResponse_BasicOkResponse_ShouldParseSuccessfully()
+        public async Task ParseResponse_BasicOkResponse_ShouldParseSuccessfully()
         {
             //Arrange
             var response = "+OK\r\n";
-            var expectedCommand = "+OK";
+            var expectedCommand = "OK";
 
             //Act
-            var result = _responseParser.Parse(new MemoryStream(Encoding.ASCII.GetBytes(response)));
+            var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
             result.Should().Be(expectedCommand);
