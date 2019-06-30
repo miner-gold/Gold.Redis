@@ -27,19 +27,12 @@ namespace Gold.Redis.LowLevelClient.Communication
         {
             using (var socketContainer = await _connections.GetSocket())
             {
-                try
+                var bytes = Encoding.ASCII.GetBytes(_requestBuilder.Build(command));
+                var bytesAsArraySegment = new ArraySegment<byte>(bytes);
+                var sendResult = await socketContainer.Socket.SendAsync(bytesAsArraySegment, SocketFlags.None);
+                using (var streamReader = new StreamReader(new NetworkStream(socketContainer.Socket)))
                 {
-                    var bytes = Encoding.ASCII.GetBytes(_requestBuilder.Build(command));
-                    var bytesAsArraySegment = new ArraySegment<byte>(bytes);
-                    var sendResult = await socketContainer.Socket.SendAsync(bytesAsArraySegment, SocketFlags.None);
-                    using (var streamReader = new StreamReader(new NetworkStream(socketContainer.Socket)))
-                    {
-                        return await _responseParser.Parse(streamReader);
-                    }
-                }
-                catch (Exception)
-                {
-                    throw;
+                    return await _responseParser.Parse(streamReader);
                 }
             }
         }
