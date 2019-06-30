@@ -26,6 +26,7 @@ namespace Gold.Redis.LowLevelClient.Communication
         {
             var openPair = await GetFreeToUsePair();
             openPair.Value.Wait();
+            openPair.Value.Reset();
 
             if (openPair.Key.Connected)
             {
