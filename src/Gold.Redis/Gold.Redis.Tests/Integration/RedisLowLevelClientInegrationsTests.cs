@@ -3,6 +3,7 @@ using Gold.Redis.LowLevelClient.Communication;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -19,6 +20,18 @@ namespace Gold.Redis.Tests.Integration
         [SetUp]
         public void SetUp()
         {
+            var prefixParsers = new Dictionary<char, IPrefixParser>
+            {
+                {CommandPrefixes.SimpleString, new SimpleStringParser()},
+                {CommandPrefixes.BulkString, new BulkStringParser()},
+                {CommandPrefixes.Integer, new IntegerParser()},
+                {CommandPrefixes.Error, new ErrorParser() }
+            };
+            var responseParser = new ResponseParser(prefixParsers
+                .Concat(new[]
+                    {new KeyValuePair<char, IPrefixParser>(CommandPrefixes.Array, new ArrayParser(prefixParsers))})
+                .ToDictionary(d => d.Key, d => d.Value));
+
             _client = new RedisLowLevelClient(
                 new SocketsConnectionsContainer(
                     new RedisConnectionConfiguration
@@ -26,7 +39,8 @@ namespace Gold.Redis.Tests.Integration
                         Host = "localhost",
                         Port = 6379,
                         MaxConnections = 4
-                    }), new RequestBuilder(), new ResponseParser());
+                    }), new RequestBuilder(),
+                responseParser);
         }
 
         [Test]
