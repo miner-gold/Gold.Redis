@@ -30,7 +30,9 @@ namespace Gold.Redis.LowLevelClient.Communication
                 var bytes = Encoding.ASCII.GetBytes(_requestBuilder.Build(command));
                 var bytesAsArraySegment = new ArraySegment<byte>(bytes);
                 var sendResult = await socketContainer.Socket.SendAsync(bytesAsArraySegment, SocketFlags.None);
-                using (var streamReader = new StreamReader(new NetworkStream(socketContainer.Socket)))
+
+                using (var networkStream = new NetworkStream(socketContainer.Socket))
+                using (var streamReader = new StreamReader(networkStream))
                 {
                     return await _responseParser.Parse(streamReader);
                 }
