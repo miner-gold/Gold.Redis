@@ -43,7 +43,7 @@ namespace Gold.Redis.Tests
         {
             // Arrange
             var connectionsContainer = new SocketsConnectionsContainer(new RedisConnectionConfiguration
-                {Host = "localhost", MaxConnections = 1});
+            { Host = "localhost", MaxConnections = 1 });
 
             // Act
             var socketContainer = await connectionsContainer.GetSocket();
@@ -60,19 +60,20 @@ namespace Gold.Redis.Tests
         {
             // Arrange
             var connectionsContainer = new SocketsConnectionsContainer(new RedisConnectionConfiguration
-                { Host = "localhost", MaxConnections = 1 });
+            { Host = "localhost", MaxConnections = 1 });
 
             // Act
             var socketContainer = await connectionsContainer.GetSocket();
             var socket = socketContainer.Socket;
-            _ = Task.Run(() =>
-              {
-                  Thread.Sleep(100);
-                  socketContainer.Dispose();
-              });
+            var disposeTask = Task.Run(async () =>
+            {
+                await Task.Delay(200);
+                socketContainer.Dispose();
+            });
             var secondContainer = await connectionsContainer.GetSocket();
 
             // Assert
+            disposeTask.IsCompleted.Should().BeTrue();
             secondContainer.Socket.Should().BeSameAs(socket);
         }
     }
