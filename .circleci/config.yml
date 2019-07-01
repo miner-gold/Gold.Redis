@@ -15,6 +15,6 @@ jobs:
          command:
            dotnet build src/Gold.Redis/
      - run:
-         name: Run App
+         name: Run Test
          command:
-           dotnet run src/Gold.Redis/
+           dotnet test src/Gold.Redis/
