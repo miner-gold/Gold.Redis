@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Communication\" />
-    <Folder Include="Interfaces\" />
+    <Folder Include="Models\Commands\" />
   </ItemGroup>
 
 </Project>
