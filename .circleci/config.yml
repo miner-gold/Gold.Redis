@@ -9,12 +9,12 @@ jobs:
      - run:
          name: Restore packages
          command:
-           dotnet restore .\src\Gold.Redis\
+           dotnet restore src/Gold.Redis/
      - run:
          name: Build App
          command:
-           dotnet build .\src\Gold.Redis\
+           dotnet build src/Gold.Redis/
      - run:
          name: Run App
          command:
-           dotnet run .\src\Gold.Redis\
+           dotnet run src/Gold.Redis/
