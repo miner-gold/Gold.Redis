@@ -53,7 +53,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Should().MessageBe("PONG", RedisResponse.SimpleString);
+            results.Should().MessageBe("PONG", RedisResponseTypes.SimpleString);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Should().MessageBe("OK", RedisResponse.SimpleString);
+            results.Should().MessageBe("OK", RedisResponseTypes.SimpleString);
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Gold.Redis.Tests.Integration
             var result = await _client.ExecuteCommand(getCommand);
 
             //Assert
-            result.Should().MessageBe(value.ToString(), RedisResponse.BulkString);
+            result.Should().MessageBe(value.ToString(), RedisResponseTypes.BulkString);
         }
     }
 }

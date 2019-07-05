@@ -9,13 +9,13 @@ using Gold.Redis.Common.Models;
 
 namespace Gold.Redis.Tests.AssertExtensions
 {
-    public class RedisLowLevelResponseAssertions : ReferenceTypeAssertions<RedisLowLevelRespons, RedisLowLevelResponseAssertions>
+    public class RedisLowLevelResponseAssertions : ReferenceTypeAssertions<RedisLowLevelResponse, RedisLowLevelResponseAssertions>
     {
         protected override string Identifier => "response";
 
-        public RedisLowLevelResponseAssertions(RedisLowLevelRespons subject) : base(subject) { }
+        public RedisLowLevelResponseAssertions(RedisLowLevelResponse subject) : base(subject) { }
 
-        public AndConstraint<RedisLowLevelResponseAssertions> MessageBe(string message, RedisResponse responseType)
+        public AndConstraint<RedisLowLevelResponseAssertions> MessageBe(string message, RedisResponseTypes responseType)
         {
             Execute.Assertion
                 .ForCondition(Subject.Message.Equals(message))
@@ -30,7 +30,7 @@ namespace Gold.Redis.Tests.AssertExtensions
 
     public static class RedisLowLevelResponseExtensions
     {
-        public static RedisLowLevelResponseAssertions Should(this RedisLowLevelRespons response)
+        public static RedisLowLevelResponseAssertions Should(this RedisLowLevelResponse response)
         {
             return new RedisLowLevelResponseAssertions(response);
         }
