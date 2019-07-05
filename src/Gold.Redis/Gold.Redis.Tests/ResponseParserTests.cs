@@ -43,7 +43,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            result.Message.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            result.Message.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            result.Message.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            result.Message.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            result.Message.Should().Be(expectedCommand);
         }
     }
 }

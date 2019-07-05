@@ -37,7 +37,7 @@ namespace Gold.Redis.Tests.Integration
                     new RedisConnectionConfiguration
                     {
                         Host = "localhost",
-                        Port = 6379,
+                        Port = 6666,
                         MaxConnections = 4
                     }), new RequestBuilder(),
                 responseParser);
@@ -53,7 +53,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Should().Be("PONG");
+            results.Message.Should().Be("PONG");
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Should().Be("OK");
+            results.Message.Should().Be("OK");
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Gold.Redis.Tests.Integration
             var result = await _client.ExecuteCommand(getCommand);
 
             //Assert
-            result.Should().Be($"{value}");
+            result.Message.Should().Be($"{value}");
         }
     }
 }

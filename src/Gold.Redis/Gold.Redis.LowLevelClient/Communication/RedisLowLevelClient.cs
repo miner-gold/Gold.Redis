@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.Common.Interfaces.Parsers;
+using Gold.Redis.Common.Models;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
@@ -23,7 +24,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             _responseParser = responseParser;
         }
 
-        public async Task<string> ExecuteCommand(string command)
+        public async Task<RedisLowLevelRespons> ExecuteCommand(string command)
         {
             using (var socketContainer = await _connections.GetSocket())
             {
