@@ -37,7 +37,7 @@ namespace Gold.Redis.Tests.Integration
                     new RedisConnectionConfiguration
                     {
                         Host = "localhost",
-                        Port = 6666,
+                        Port = 6379,
                         MaxConnections = 4
                     }), new RequestBuilder(),
                 responseParser);
