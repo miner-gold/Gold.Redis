@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Gold.Redis.Common;
 using Gold.Redis.LowLevelClient.Parsers;
+using Gold.Redis.Tests.AssertExtensions;
 using NUnit.Framework;
 
 namespace Gold.Redis.Tests
@@ -43,7 +43,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Message.Should().Be(expectedCommand);
+            result.Should().MessageBe(expectedCommand, RedisResponse.SimpleString);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Message.Should().Be(expectedCommand);
+            result.Should().MessageBe(expectedCommand, RedisResponse.BulkString);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Message.Should().Be(expectedCommand);
+            result.Should().MessageBe(expectedCommand, RedisResponse.Integer);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Message.Should().Be(expectedCommand);
+            result.Should().MessageBe(expectedCommand, RedisResponse.Error);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Message.Should().Be(expectedCommand);
+            result.Should().MessageBe(expectedCommand, RedisResponse.Array);
         }
     }
 }

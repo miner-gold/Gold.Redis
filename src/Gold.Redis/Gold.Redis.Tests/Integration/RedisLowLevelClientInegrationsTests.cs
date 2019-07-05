@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Gold.Redis.Common;
 using Gold.Redis.LowLevelClient.Parsers;
+using Gold.Redis.Tests.AssertExtensions;
 
 namespace Gold.Redis.Tests.Integration
 {
@@ -53,7 +53,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Message.Should().Be("PONG");
+            results.Should().MessageBe("PONG", RedisResponse.SimpleString);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Message.Should().Be("OK");
+            results.Should().MessageBe("OK", RedisResponse.SimpleString);
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Gold.Redis.Tests.Integration
             var result = await _client.ExecuteCommand(getCommand);
 
             //Assert
-            result.Message.Should().Be($"{value}");
+            result.Should().MessageBe(value.ToString(), RedisResponse.BulkString);
         }
     }
 }
