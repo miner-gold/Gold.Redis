@@ -83,7 +83,7 @@ namespace Gold.Redis.Tests.Integration
             var result = await _client.ExecuteCommand(getCommand);
 
             //Assert
-            result.Should().MessageBe(value.ToString(), RedisResponse.SimpleString);
+            result.Should().MessageBe(value.ToString(), RedisResponse.BulkString);
         }
     }
 }
