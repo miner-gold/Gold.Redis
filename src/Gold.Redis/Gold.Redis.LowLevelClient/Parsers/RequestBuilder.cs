@@ -13,12 +13,12 @@ namespace Gold.Redis.LowLevelClient.Parsers
             var separatedCommands = request.Split(' ');
             var builder = new StringBuilder();
 
-            var requestStartString = $"{(char)RedisResponse.Array}{separatedCommands.Length}{Constants.CrLf}";
+            var requestStartString = $"{(char)RedisResponseTypes.Array}{separatedCommands.Length}{Constants.CrLf}";
             builder.Append(requestStartString);
 
             foreach (var commandContent in separatedCommands)
             {
-                var command = $"{(char)RedisResponse.BulkString}{commandContent.Length}{Constants.CrLf}{commandContent}{Constants.CrLf}";
+                var command = $"{(char)RedisResponseTypes.BulkString}{commandContent.Length}{Constants.CrLf}{commandContent}{Constants.CrLf}";
                 builder.Append(command);
             }
 

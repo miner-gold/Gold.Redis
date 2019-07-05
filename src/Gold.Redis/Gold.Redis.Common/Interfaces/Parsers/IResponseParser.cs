@@ -9,6 +9,6 @@ namespace Gold.Redis.Common.Interfaces.Parsers
 {
     public interface IResponseParser
     {
-        Task<RedisLowLevelRespons> Parse(StreamReader stream);
+        Task<RedisLowLevelResponse> Parse(StreamReader stream);
     }
 }

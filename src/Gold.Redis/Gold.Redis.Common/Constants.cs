@@ -10,7 +10,7 @@ namespace Gold.Redis.Common
     }
 
 
-    public enum RedisResponse
+    public enum RedisResponseTypes
     {
         SimpleString = '+',
         Error = '-',

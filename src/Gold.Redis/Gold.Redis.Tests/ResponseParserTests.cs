@@ -19,16 +19,16 @@ namespace Gold.Redis.Tests
         [SetUp]
         public void SetUp()
         {
-            var prefixParsers = new Dictionary<RedisResponse, IPrefixParser>
+            var prefixParsers = new Dictionary<RedisResponseTypes, IPrefixParser>
             {
-                {RedisResponse.SimpleString, new SimpleStringParser()},
-                {RedisResponse.BulkString, new BulkStringParser()},
-                {RedisResponse.Integer, new IntegerParser()},
-                {RedisResponse.Error, new ErrorParser() }
+                {RedisResponseTypes.SimpleString, new SimpleStringParser()},
+                {RedisResponseTypes.BulkString, new BulkStringParser()},
+                {RedisResponseTypes.Integer, new IntegerParser()},
+                {RedisResponseTypes.Error, new ErrorParser() }
             };
             _responseParser = new ResponseParser(prefixParsers
                 .Concat(new[]
-                    {new KeyValuePair<RedisResponse, IPrefixParser>(RedisResponse.Array, new ArrayParser(prefixParsers))})
+                    {new KeyValuePair<RedisResponseTypes, IPrefixParser>(RedisResponseTypes.Array, new ArrayParser(prefixParsers))})
                 .ToDictionary(d => d.Key, d => d.Value));
         }
 
@@ -50,7 +50,7 @@ namespace Gold.Redis.Tests
         public async Task ParseResponse_GetResponse_ShouldParseSuccessfully()
         {
             //Arrange
-            var response = $"{(char)RedisResponse.BulkString}" +
+            var response = $"{(char)RedisResponseTypes.BulkString}" +
                            $"6{Constants.CrLf}RandomString{Constants.CrLf}";
             var expectedCommand = "RandomString";
 
@@ -65,7 +65,7 @@ namespace Gold.Redis.Tests
         public async Task ParseResponse_BasicIntResponse_ShouldParseSuccessfully()
         {
             //Arrange
-            var response = $"{(char)RedisResponse.Integer}6{Constants.CrLf}";
+            var response = $"{(char)RedisResponseTypes.Integer}6{Constants.CrLf}";
             var expectedCommand = "6";
 
             //Act
@@ -79,7 +79,7 @@ namespace Gold.Redis.Tests
         public async Task ParseResponse_BasicErrorResponse_ShouldParseSuccessfully()
         {
             //Arrange
-            var response = $"{(char)RedisResponse.Error}ErrorMessage{Constants.CrLf}";
+            var response = $"{(char)RedisResponseTypes.Error}ErrorMessage{Constants.CrLf}";
             var expectedCommand = "ErrorMessage";
 
             //Act
@@ -93,10 +93,10 @@ namespace Gold.Redis.Tests
         public async Task ParseResponse_BasicStringResponse_ShouldParseSuccessfully()
         {
             //Arrange
-            var response = $"{(char)RedisResponse.Array}2{Constants.CrLf}" +
-                           $"{(char)RedisResponse.BulkString}3{Constants.CrLf}" +
+            var response = $"{(char)RedisResponseTypes.Array}2{Constants.CrLf}" +
+                           $"{(char)RedisResponseTypes.BulkString}3{Constants.CrLf}" +
                            $"foo{Constants.CrLf}" +
-                           $"{(char)RedisResponse.BulkString}3{Constants.CrLf}" +
+                           $"{(char)RedisResponseTypes.BulkString}3{Constants.CrLf}" +
                            $"bar{Constants.CrLf}";
             var expectedCommand = "foo bar";
 

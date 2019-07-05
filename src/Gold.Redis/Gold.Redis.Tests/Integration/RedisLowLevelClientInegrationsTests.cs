@@ -20,16 +20,16 @@ namespace Gold.Redis.Tests.Integration
         [SetUp]
         public void SetUp()
         {
-            var prefixParsers = new Dictionary<RedisResponse, IPrefixParser>
+            var prefixParsers = new Dictionary<RedisResponseTypes, IPrefixParser>
             {
-                {RedisResponse.SimpleString, new SimpleStringParser()},
-                {RedisResponse.BulkString, new BulkStringParser()},
-                {RedisResponse.Integer, new IntegerParser()},
-                {RedisResponse.Error, new ErrorParser() }
+                {RedisResponseTypes.SimpleString, new SimpleStringParser()},
+                {RedisResponseTypes.BulkString, new BulkStringParser()},
+                {RedisResponseTypes.Integer, new IntegerParser()},
+                {RedisResponseTypes.Error, new ErrorParser() }
             };
             var responseParser = new ResponseParser(prefixParsers
                 .Concat(new[]
-                    {new KeyValuePair<RedisResponse, IPrefixParser>(RedisResponse.Array, new ArrayParser(prefixParsers))})
+                    {new KeyValuePair<RedisResponseTypes, IPrefixParser>(RedisResponseTypes.Array, new ArrayParser(prefixParsers))})
                 .ToDictionary(d => d.Key, d => d.Value));
 
             _client = new RedisLowLevelClient(
@@ -37,7 +37,7 @@ namespace Gold.Redis.Tests.Integration
                     new RedisConnectionConfiguration
                     {
                         Host = "localhost",
-                        Port = 6379,
+                        Port = 6666,
                         MaxConnections = 4
                     }), new RequestBuilder(),
                 responseParser);

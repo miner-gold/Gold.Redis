@@ -24,7 +24,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             _responseParser = responseParser;
         }
 
-        public async Task<RedisLowLevelRespons> ExecuteCommand(string command)
+        public async Task<RedisLowLevelResponse> ExecuteCommand(string command)
         {
             using (var socketContainer = await _connections.GetSocket())
             {

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Gold.Redis.Common.Models
 {
-    public class RedisLowLevelRespons
+    public class RedisLowLevelResponse
     {
         public string Message { get; set; }
-        public RedisResponse ResponseType{ get; set; }
+        public RedisResponseTypes ResponseType{ get; set; }
     }
 }

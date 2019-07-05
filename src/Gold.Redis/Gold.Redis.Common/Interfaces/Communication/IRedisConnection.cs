@@ -8,6 +8,6 @@ namespace Gold.Redis.Common.Interfaces.Communication
 {
     public interface IRedisConnection
     {
-        Task<RedisLowLevelRespons> ExecuteCommand(string command);
+        Task<RedisLowLevelResponse> ExecuteCommand(string command);
     }
 }

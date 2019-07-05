@@ -10,84 +10,84 @@ namespace Gold.Redis.LowLevelClient.Parsers
 {
     public interface IPrefixParser
     {
-        Task<RedisLowLevelRespons> Parse(StreamReader stream);
+        Task<RedisLowLevelResponse> Parse(StreamReader stream);
     }
 
     public class SimpleStringParser : IPrefixParser
     {
-        public async Task<RedisLowLevelRespons> Parse(StreamReader stream)
+        public async Task<RedisLowLevelResponse> Parse(StreamReader stream)
         {
             var response = await stream.ReadLineAsync();
-            return new RedisLowLevelRespons
+            return new RedisLowLevelResponse
             {
                 Message = response,
-                ResponseType = RedisResponse.SimpleString
+                ResponseType = RedisResponseTypes.SimpleString
             };
         }
     }
 
     public class ErrorParser : IPrefixParser
     {
-        public async Task<RedisLowLevelRespons> Parse(StreamReader stream)
+        public async Task<RedisLowLevelResponse> Parse(StreamReader stream)
         {
             var response = await stream.ReadLineAsync();
-            return new RedisLowLevelRespons
+            return new RedisLowLevelResponse
             {
                 Message = response,
-                ResponseType = RedisResponse.Error
+                ResponseType = RedisResponseTypes.Error
             };
         }
     }
 
     public class BulkStringParser : IPrefixParser
     {
-        public async Task<RedisLowLevelRespons> Parse(StreamReader stream)
+        public async Task<RedisLowLevelResponse> Parse(StreamReader stream)
         {
             var responseLength = await stream.ReadLineAsync();
             var response = await stream.ReadLineAsync();
-            return new RedisLowLevelRespons
+            return new RedisLowLevelResponse
             {
                 Message = response,
-                ResponseType = RedisResponse.BulkString
+                ResponseType = RedisResponseTypes.BulkString
             };
         }
     }
 
     public class IntegerParser : IPrefixParser
     {
-        public async Task<RedisLowLevelRespons> Parse(StreamReader stream)
+        public async Task<RedisLowLevelResponse> Parse(StreamReader stream)
         {
             var response = await stream.ReadLineAsync();
-            return new RedisLowLevelRespons
+            return new RedisLowLevelResponse
             {
                 Message = response,
-                ResponseType = RedisResponse.Integer
+                ResponseType = RedisResponseTypes.Integer
             };
         }
     }
 
     public class ArrayParser : IPrefixParser
     {
-        private readonly Dictionary<RedisResponse, IPrefixParser> _prefixParsers;
-        public ArrayParser(Dictionary<RedisResponse, IPrefixParser> prefixParsers)
+        private readonly Dictionary<RedisResponseTypes, IPrefixParser> _prefixParsers;
+        public ArrayParser(Dictionary<RedisResponseTypes, IPrefixParser> prefixParsers)
         {
             _prefixParsers = prefixParsers;
         }
 
-        public async Task<RedisLowLevelRespons> Parse(StreamReader stream)
+        public async Task<RedisLowLevelResponse> Parse(StreamReader stream)
         {
             var builder = new StringBuilder();
             var length = int.Parse(await stream.ReadLineAsync());
             for (var i = 0; i < length; i++)
             {
-                var prefixChar = (RedisResponse)stream.Read();
+                var prefixChar = (RedisResponseTypes)stream.Read();
                 var parsedResponse = await _prefixParsers[prefixChar].Parse(stream);
                 builder.Append($"{parsedResponse.Message} ");
             }
-            return new RedisLowLevelRespons
+            return new RedisLowLevelResponse
             {
                 Message = builder.ToString().TrimEnd(),
-                ResponseType = RedisResponse.Array
+                ResponseType = RedisResponseTypes.Array
             };
         }
     }
