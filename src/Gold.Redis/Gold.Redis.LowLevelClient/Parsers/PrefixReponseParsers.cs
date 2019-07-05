@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Gold.Redis.Common;
 
 namespace Gold.Redis.LowLevelClient.Parsers
 {
@@ -46,8 +47,8 @@ namespace Gold.Redis.LowLevelClient.Parsers
 
     public class ArrayParser : IPrefixParser
     {
-        private readonly Dictionary<char, IPrefixParser> _prefixParsers;
-        public ArrayParser(Dictionary<char, IPrefixParser> prefixParsers)
+        private readonly Dictionary<RedisResponse, IPrefixParser> _prefixParsers;
+        public ArrayParser(Dictionary<RedisResponse, IPrefixParser> prefixParsers)
         {
             _prefixParsers = prefixParsers;
         }
@@ -58,7 +59,7 @@ namespace Gold.Redis.LowLevelClient.Parsers
             var length = int.Parse(await stream.ReadLineAsync());
             for (var i = 0; i < length; i++)
             {
-                var prefixChar = (char)stream.Read();
+                var prefixChar = (RedisResponse)stream.Read();
                 builder.Append($"{await _prefixParsers[prefixChar].Parse(stream)} ");
             }
 

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Commands\" />
+    <Folder Include="Models\Configuration\" />
   </ItemGroup>
 
 </Project>

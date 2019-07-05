@@ -9,12 +9,13 @@ namespace Gold.Redis.Common
         public const string CrLf = "\r\n";
     }
 
-    public static class CommandPrefixes
+
+    public enum RedisResponse
     {
-        public const char SimpleString = '+';
-        public const char Error = '-';
-        public const char Integer = ':';
-        public const char BulkString = '$';
-        public const char Array = '*';
+        SimpleString = '+',
+        Error = '-',
+        Integer = ':',
+        BulkString = '$',
+        Array = '*'
     }
 }

@@ -11,15 +11,15 @@ namespace Gold.Redis.LowLevelClient.Parsers
 {
     public class ResponseParser : IResponseParser
     {
-        private readonly Dictionary<char, IPrefixParser> _prefixParsers;
-        public ResponseParser(Dictionary<char, IPrefixParser> prefixParsers)
+        private readonly Dictionary<RedisResponse, IPrefixParser> _prefixParsers;
+        public ResponseParser(Dictionary<RedisResponse, IPrefixParser> prefixParsers)
         {
             _prefixParsers = prefixParsers;
         }
 
         public async Task<string> Parse(StreamReader stream)
         {
-            var firstChar = (char)stream.Read();
+            var firstChar = (RedisResponse)stream.Read();
             return await _prefixParsers[firstChar].Parse(stream);
         }
     }
