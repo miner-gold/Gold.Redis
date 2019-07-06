@@ -7,8 +7,8 @@ namespace Gold.Redis.Common
     public static class Constants
     {
         public const string CrLf = "\r\n";
+        public const string MovedError = "MOVED";
     }
-
 
     public enum RedisResponseTypes
     {
@@ -17,5 +17,11 @@ namespace Gold.Redis.Common
         Integer = ':',
         BulkString = '$',
         Array = '*'
+    }
+
+    public enum MessageType
+    {
+        Moved,
+        Ask,
     }
 }
