@@ -6,7 +6,7 @@ using Gold.Redis.Common.Models;
 
 namespace Gold.Redis.LowLevelClient.Parsers
 {
-    public class MessageParser : IMessageResponseParser
+    public class MessageParser : IMessageParser
     {
         private readonly IEnumerable<IMessageParser> _parsers;
 
