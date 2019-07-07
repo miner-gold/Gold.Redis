@@ -22,10 +22,8 @@ namespace Gold.Redis.LowLevelClient.Parsers.MessageParsers
 
         public bool Test(RedisLowLevelResponse response)
         {
-            if (response.ResponseType == RedisResponseTypes.Error &&
-                response.Message.StartsWith(Constants.MovedError))
-                return true;
-            return false;
+            return response.ResponseType == RedisResponseTypes.Error &&
+                   response.Message.StartsWith(Constants.MovedError);
         }
     }
 }
