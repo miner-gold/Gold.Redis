@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gold.Redis.Common;
 using Gold.Redis.Common.Interfaces.Parsers;
@@ -15,9 +16,16 @@ namespace Gold.Redis.LowLevelClient.Parsers
             _parsers = parsers;
         }
 
+        public bool Test(RedisLowLevelResponse response)
+        {
+            var correctParser = _parsers.FirstOrDefault(parser => parser.Test(response));
+            return correctParser != null;
+        }
+
         public KeyValuePair<MessageType, IDictionary<string, string>> Parse(RedisLowLevelResponse response)
         {
-            var correctParser = _parsers.First(parser => parser.Test(response));
+            var correctParser = _parsers.FirstOrDefault(parser => parser.Test(response));
+            if (correctParser == null) throw new MissingMethodException("correct parser was not found");
             return correctParser.Parse(response);
         }
     }
