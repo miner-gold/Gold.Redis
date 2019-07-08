@@ -8,6 +8,9 @@ namespace Gold.Redis.Common
     {
         public const string CrLf = "\r\n";
         public const string MovedError = "MOVED";
+        public const string Host = "host";
+        public const string Port = "port";
+        public const string HashMap = "HashMap";
     }
 
     public enum RedisResponseTypes

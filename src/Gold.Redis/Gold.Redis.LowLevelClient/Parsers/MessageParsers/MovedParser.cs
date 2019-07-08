@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Transactions;
 using Gold.Redis.Common;
 using Gold.Redis.Common.Interfaces.Parsers;
 using Gold.Redis.Common.Models;
@@ -13,9 +14,9 @@ namespace Gold.Redis.LowLevelClient.Parsers.MessageParsers
             var connectionParts = messageParts[2].Split(':');
             var parameters = new Dictionary<string, string>
             {
-                { "hashSlot", messageParts[1]},
-                { "host", connectionParts[0]},
-                { "port", connectionParts[1]}
+                { Constants.HashMap, messageParts[1]},
+                { Constants.Host, connectionParts[0]},
+                { Constants.Port, connectionParts[1]}
             };
             return new KeyValuePair<MessageType, IDictionary<string, string>>(MessageType.Moved, parameters);
         }
