@@ -13,34 +13,20 @@ using Gold.Redis.Tests.AssertExtensions;
 namespace Gold.Redis.Tests.Integration
 {
     [TestFixture]
-    public class RedisLowLevelClientIntegrationsTests
+    public class RedisLowLevelClientIntegrationsTests : RedisClientTest
     {
         private RedisLowLevelClient _client;
 
         [SetUp]
         public void SetUp()
         {
-            var prefixParsers = new Dictionary<RedisResponseTypes, IPrefixParser>
+            var config = new RedisConnectionConfiguration
             {
-                {RedisResponseTypes.SimpleString, new SimpleStringParser()},
-                {RedisResponseTypes.BulkString, new BulkStringParser()},
-                {RedisResponseTypes.Integer, new IntegerParser()},
-                {RedisResponseTypes.Error, new ErrorParser() }
+                Host = "localhost",
+                Port = 6379,
+                MaxConnections = 4
             };
-            var responseParser = new ResponseParser(prefixParsers
-                .Concat(new[]
-                    {new KeyValuePair<RedisResponseTypes, IPrefixParser>(RedisResponseTypes.Array, new ArrayParser(prefixParsers))})
-                .ToDictionary(d => d.Key, d => d.Value));
-
-            _client = new RedisLowLevelClient(
-                new SocketsConnectionsContainer(
-                    new RedisConnectionConfiguration
-                    {
-                        Host = "localhost",
-                        Port = 6666,
-                        MaxConnections = 4
-                    }), new RequestBuilder(),
-                responseParser);
+            _client = CreateClient(config);     
         }
 
         [Test]
