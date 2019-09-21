@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gold.Redis.Common.Models.Configuration
+﻿namespace Gold.Redis.Common.Models.Configuration
 {
     public class RedisConnectionConfiguration
     {

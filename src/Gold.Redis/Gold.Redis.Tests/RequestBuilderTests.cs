@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Gold.Redis.Common;
 using Gold.Redis.LowLevelClient.Parsers;
 using NUnit.Framework;

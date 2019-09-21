@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
+﻿using System.Net.Sockets;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common.Interfaces.Communication;
 using Gold.Redis.Common.Models.Configuration;
 using Gold.Redis.LowLevelClient.Communication;
-using Gold.Redis.LowLevelClient.Parsers;
 using Moq;
 using NUnit.Framework;
 

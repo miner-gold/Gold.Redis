@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
-using Gold.Redis.Common.Interfaces;
+﻿using System.Net.Sockets;
 using Gold.Redis.Common.Interfaces.Communication;
 
 namespace Gold.Redis.LowLevelClient.Communication

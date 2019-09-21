@@ -1,8 +1,5 @@
-﻿using Gold.Redis.Common.Models.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Gold.Redis.Common.Interfaces.Communication

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gold.Redis.Common
+﻿namespace Gold.Redis.Common
 {
     public static class Constants
     {
