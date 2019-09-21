@@ -4,7 +4,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common;
@@ -56,7 +55,6 @@ namespace Gold.Redis.Tests.Integration
             results.Should().Be("PONG");
         }
 
-        [Test]
         public async Task ExecuteCommand_SetKey_ShouldReturnOk()
         {
             //Arrange 
@@ -78,12 +76,42 @@ namespace Gold.Redis.Tests.Integration
             var setCommand = $"SET {key} {value}";
             var getCommand = $"GET {key}";
 
-            //Act
+            //Act 
             await _client.ExecuteCommand(setCommand);
             var result = await _client.ExecuteCommand(getCommand);
 
             //Assert
             result.Should().Be($"{value}");
+        }
+
+        [Test]
+        public async Task ExecuteCommand_SetKeyAndValidateIsExisting_ShouldReturnOne()
+        {
+            //Arrange 
+            var key = Guid.NewGuid();
+            var value = Guid.NewGuid();
+            var setCommand = $"SET {key} {value}";
+            var existsCommand = $"EXISTS {key}";
+
+            //Act 
+            await _client.ExecuteCommand(setCommand);
+            var result = await _client.ExecuteCommand(existsCommand);
+
+            //Assert
+            result.Should().Be($"1");
+        }
+        [Test]
+        public async Task ExecuteCommand_ExistOnKeyThatDoesNotExits_ShouldReturnZero()
+        {
+            //Arrange 
+            var randomKey = Guid.NewGuid();
+            var existsCommand = $"EXISTS {randomKey}";
+
+            //Act 
+            var result = await _client.ExecuteCommand(existsCommand);
+
+            //Assert
+            result.Should().Be($"0");
         }
     }
 }
