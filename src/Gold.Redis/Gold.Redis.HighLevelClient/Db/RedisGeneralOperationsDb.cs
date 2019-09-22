@@ -15,7 +15,7 @@ namespace Gold.Redis.HighLevelClient.Db
         }
         public Task<T> Get<T>(string key)
         {
-            var command = new Get
+            throw new NotImplementedException();
         }
 
         public Task<IEnumerable<string>> GetMatchingKeys(string pattern)
