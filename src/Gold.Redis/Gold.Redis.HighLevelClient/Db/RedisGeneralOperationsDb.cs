@@ -13,9 +13,14 @@ namespace Gold.Redis.HighLevelClient.Db
         {
             _commandExecutor = commandExecutor;
         }
-        public Task<T> Get<T>(string key)
+        public async Task<T> Get<T>(string key)
         {
-            throw new NotImplementedException();
+            var command = new GetCommand
+            {
+                Key = key
+            };
+
+            return await _commandExecutor.Execute<T>(command);
         }
 
         public Task<IEnumerable<string>> GetMatchingKeys(string pattern)
