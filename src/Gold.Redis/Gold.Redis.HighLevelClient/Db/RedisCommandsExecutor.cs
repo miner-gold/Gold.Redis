@@ -3,6 +3,7 @@ using Gold.Redis.Common.Interfaces.Db;
 using Gold.Redis.Common.Models.Commands;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Gold.Redis.HighLevelClient.Db
@@ -10,13 +11,14 @@ namespace Gold.Redis.HighLevelClient.Db
     public class RedisCommandsExecutor : IRedisCommandExecutor
     {
         private readonly IRedisConnection _redisConnection;
-        private readonly JsonSerializerSettings _serializerSettings;
+        private readonly JsonSerializer _jsonSerializer;
+
         public RedisCommandsExecutor(
             IRedisConnection redisConnection,
             JsonSerializerSettings serializerSettings = null)
         {
             _redisConnection = redisConnection;
-            _serializerSettings = serializerSettings;
+            _jsonSerializer = JsonSerializer.Create(serializerSettings);
         }
         public async Task<T> Execute<T>(Command command)
         {
@@ -27,9 +29,11 @@ namespace Gold.Redis.HighLevelClient.Db
             }
 
             var responseStr = await _redisConnection.ExecuteCommand(commandStr);
-            return _serializerSettings == null ?
-                JsonConvert.DeserializeObject<T>(responseStr) :
-                JsonConvert.DeserializeObject<T>(responseStr, _serializerSettings);
+            using(var stringReader = new StringReader(responseStr))
+            using(var jsonReader = new JsonTextReader(stringReader))
+            {
+                return _jsonSerializer.Deserialize<T>(jsonReader);
+            }
         }
     }
 }
