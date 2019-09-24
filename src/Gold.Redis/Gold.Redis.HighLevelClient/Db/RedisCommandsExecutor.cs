@@ -10,14 +10,14 @@ namespace Gold.Redis.HighLevelClient.Db
 {
     public class RedisCommandsExecutor : IRedisCommandExecutor
     {
-        private readonly IRedisConnection _redisConnection;
+        private readonly IRedisCommandHandler _redisCommandHandler;
         private readonly JsonSerializer _jsonSerializer;
 
         public RedisCommandsExecutor(
-            IRedisConnection redisConnection,
+            IRedisCommandHandler redisCommandHandler,
             JsonSerializerSettings serializerSettings = null)
         {
-            _redisConnection = redisConnection;
+            _redisCommandHandler = redisCommandHandler;
             _jsonSerializer = JsonSerializer.Create(serializerSettings);
         }
         public async Task<T> Execute<T>(Command command)
@@ -25,10 +25,10 @@ namespace Gold.Redis.HighLevelClient.Db
             var commandStr = command.GetCommandString();
             if (string.IsNullOrEmpty(commandStr))
             {
-                throw new InvalidOperationException("Connot execute null command");
+                throw new InvalidOperationException("Can not execute null command");
             }
 
-            var responseStr = await _redisConnection.ExecuteCommand(commandStr);
+            var responseStr = await _redisCommandHandler.ExecuteCommand(commandStr);
             using(var stringReader = new StringReader(responseStr))
             using(var jsonReader = new JsonTextReader(stringReader))
             {
