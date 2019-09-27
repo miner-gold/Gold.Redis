@@ -328,3 +328,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+src/Gold.Redis/Gold.Redis.Tests/RedisConfig.json
