@@ -1,6 +1,5 @@
-﻿using Gold.Redis.Common.Interfaces.Communication;
+using Gold.Redis.Common.Interfaces.Communication;
 using Gold.Redis.Common.Models.Configuration;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
