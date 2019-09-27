@@ -19,7 +19,6 @@ namespace Gold.Redis.LowLevelClient.Communication
                 var authCommand = "AUTH " + password;
                 var response = await _socketCommandExecutor.ExecuteCommand(connectionSocket, authCommand);
                 return response == "OK";
-
             }
             catch (Exception)
             {
