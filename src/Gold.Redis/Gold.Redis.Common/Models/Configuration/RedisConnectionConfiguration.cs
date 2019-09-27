@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +8,6 @@ namespace Gold.Redis.Common.Models.Configuration
     {
         public string Host { get; set; }
         public int Port { get; set; } = 6379;
-        public int MaxConnections { get; set; }
+        public string Password { get; set; }
     }
 }
