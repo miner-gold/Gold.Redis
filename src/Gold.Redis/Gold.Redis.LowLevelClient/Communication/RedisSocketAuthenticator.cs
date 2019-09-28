@@ -2,6 +2,7 @@
 using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Gold.Redis.Common;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
@@ -18,7 +19,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             {
                 var authCommand = "AUTH " + password;
                 var response = await _socketCommandExecutor.ExecuteCommand(connectionSocket, authCommand);
-                return response == "OK";
+                return response == Constants.OkResponse;
             }
             catch (Exception)
             {
