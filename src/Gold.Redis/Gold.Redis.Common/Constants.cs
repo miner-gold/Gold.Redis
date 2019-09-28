@@ -3,6 +3,7 @@
     public static class Constants
     {
         public const string CrLf = "\r\n";
+        public const string OkResponse = "OK";
     }
 
     public static class CommandPrefixes

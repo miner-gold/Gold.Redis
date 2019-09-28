@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Gold.Redis.Common;
-using Gold.Redis.Common.Models.Configuration;
 using Gold.Redis.HighLevelClient.Db;
 using Gold.Redis.LowLevelClient.Communication;
 using Gold.Redis.LowLevelClient.Parsers;
+using Gold.Redis.Tests.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -31,16 +31,12 @@ namespace Gold.Redis.Tests.Integration
                 .Concat(new[]
                     {new KeyValuePair<char, IPrefixParser>(CommandPrefixes.Array, new ArrayParser(prefixParsers))})
                 .ToDictionary(d => d.Key, d => d.Value));
+            var configuration = RedisConfigurationLoader.GetConfiguration();
+            var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), responseParser);
+            var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
+            var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
+            var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
 
-            var lowLevelClient = new RedisLowLevelClient(
-                new SocketsConnectionsContainer(
-                    new RedisConnectionConfiguration
-                    {
-                        Host = "localhost",
-                        Port = 6379,
-                        MaxConnections = 4
-                    }), new RequestBuilder(),
-                responseParser);
 
             var commandExector = new RedisCommandsExecutor(lowLevelClient);
             _client = new RedisGeneralOperationsDb(commandExector);

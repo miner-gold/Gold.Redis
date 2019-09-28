@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Gold.Redis.Common.Interfaces.Communication
+namespace Gold.Redis.LowLevelClient.Interfaces
 {
-    public interface IRedisConnection
+    public interface IRedisCommandHandler
     {
         Task<string> ExecuteCommand(string command);
     }

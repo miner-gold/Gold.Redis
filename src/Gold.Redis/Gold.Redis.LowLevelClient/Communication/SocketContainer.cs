@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-using Gold.Redis.Common.Interfaces.Communication;
+using Gold.Redis.LowLevelClient.Interfaces;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {

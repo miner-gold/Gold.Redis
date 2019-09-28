@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Gold.Redis.Common.Interfaces.Communication
+namespace Gold.Redis.LowLevelClient.Interfaces
 {
     public interface IConnectionsContainer : IDisposable
     {

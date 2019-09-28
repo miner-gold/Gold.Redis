@@ -1,20 +1,23 @@
-﻿using Gold.Redis.Common.Models.Configuration;
-using Gold.Redis.LowLevelClient.Communication;
+﻿using Gold.Redis.LowLevelClient.Communication;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common;
+using Gold.Redis.Common.Configuration;
 using Gold.Redis.LowLevelClient.Parsers;
+using Gold.Redis.Tests.Helpers;
 
 namespace Gold.Redis.Tests.Integration
 {
     [TestFixture]
-    public class RedisLowLevelClientIntegrationsTests
+    public class RedisCommandHandlerIntegrationsTests
     {
-        private RedisLowLevelClient _client;
+        private RedisCommandHandler _client;
+        private RedisConnectionConfiguration _configuration;
 
         [SetUp]
         public void SetUp()
@@ -31,15 +34,11 @@ namespace Gold.Redis.Tests.Integration
                     {new KeyValuePair<char, IPrefixParser>(CommandPrefixes.Array, new ArrayParser(prefixParsers))})
                 .ToDictionary(d => d.Key, d => d.Value));
 
-            _client = new RedisLowLevelClient(
-                new SocketsConnectionsContainer(
-                    new RedisConnectionConfiguration
-                    {
-                        Host = "localhost",
-                        Port = 6379,
-                        MaxConnections = 4
-                    }), new RequestBuilder(),
-                responseParser);
+            _configuration = RedisConfigurationLoader.GetConfiguration();
+            var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), responseParser);
+            var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
+            var connectionContainer = new SocketsConnectionsContainer(_configuration, authenticator);
+            _client = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
         }
 
         [Test]
@@ -55,6 +54,7 @@ namespace Gold.Redis.Tests.Integration
             results.Should().Be("PONG");
         }
 
+        [Test]
         public async Task ExecuteCommand_SetKey_ShouldReturnOk()
         {
             //Arrange 
@@ -112,6 +112,18 @@ namespace Gold.Redis.Tests.Integration
 
             //Assert
             result.Should().Be($"0");
+        }
+
+        [Test]
+        public async Task ExecuteCommand_PingWhenBadPassword_ShouldThrowAuthenticationError()
+        {
+            //Arrange 
+            var randomPassword = Guid.NewGuid().ToString();
+            _configuration.Password = randomPassword;
+            var command = "PING";
+
+            //Act
+            Assert.ThrowsAsync<AuthenticationException>(async() =>await _client.ExecuteCommand(command));
         }
     }
 }

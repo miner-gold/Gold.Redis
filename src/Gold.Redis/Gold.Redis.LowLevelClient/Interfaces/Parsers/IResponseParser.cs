@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace Gold.Redis.Common.Interfaces.Parsers
+namespace Gold.Redis.LowLevelClient.Interfaces.Parsers
 {
     public interface IResponseParser
     {

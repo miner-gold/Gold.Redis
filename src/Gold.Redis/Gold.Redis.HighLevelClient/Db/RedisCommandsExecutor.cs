@@ -1,6 +1,6 @@
-﻿using Gold.Redis.Common.Interfaces.Communication;
-using Gold.Redis.Common.Interfaces.Db;
+﻿using Gold.Redis.Common.Interfaces.Db;
 using Gold.Redis.Common.Models.Commands;
+using Gold.Redis.LowLevelClient.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -10,14 +10,14 @@ namespace Gold.Redis.HighLevelClient.Db
 {
     public class RedisCommandsExecutor : IRedisCommandExecutor
     {
-        private readonly IRedisConnection _redisConnection;
+        private readonly IRedisCommandHandler _redisCommandHandler;
         private readonly JsonSerializer _jsonSerializer;
 
         public RedisCommandsExecutor(
-            IRedisConnection redisConnection,
+            IRedisCommandHandler redisConnection,
             JsonSerializerSettings serializerSettings = null)
         {
-            _redisConnection = redisConnection;
+            _redisCommandHandler = redisConnection;
             _jsonSerializer = JsonSerializer.Create(serializerSettings);
         }
         public async Task<T> Execute<T>(Command command)
@@ -28,7 +28,7 @@ namespace Gold.Redis.HighLevelClient.Db
                 throw new InvalidOperationException("Connot execute null command");
             }
 
-            var responseStr = await _redisConnection.ExecuteCommand(commandStr);
+            var responseStr = await _redisCommandHandler.ExecuteCommand(commandStr);
             using(var stringReader = new StringReader(responseStr))
             using(var jsonReader = new JsonTextReader(stringReader))
             {
