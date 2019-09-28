@@ -10,6 +10,7 @@ using Gold.Redis.Common.Configuration;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 using Gold.Redis.LowLevelClient.Parsers;
 using Gold.Redis.LowLevelClient.Parsers.PrefixParsers;
+using Gold.Redis.LowLevelClient.Responses;
 using Gold.Redis.Tests.Helpers;
 
 namespace Gold.Redis.Tests.Integration
@@ -52,7 +53,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Should().Be("PONG");
+            (results as SimpleStringResponse).Response.Should().Be("PONG");
         }
 
         [Test]

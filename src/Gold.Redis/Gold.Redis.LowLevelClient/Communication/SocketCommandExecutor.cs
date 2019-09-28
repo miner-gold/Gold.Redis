@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.LowLevelClient.Interfaces;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
+using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
@@ -20,7 +21,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             _requestBuilder = builder;
             _responseParser = parser;
         }
-        public async Task<string> ExecuteCommand(Socket socket, string command)
+        public async Task<Response> ExecuteCommand(Socket socket, string command)
         {
             var bytes = Encoding.ASCII.GetBytes(_requestBuilder.Build(command));
             var bytesAsArraySegment = new ArraySegment<byte>(bytes);

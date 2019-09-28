@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Gold.Redis.LowLevelClient.Interfaces;
+using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
@@ -13,7 +14,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             _socketCommandExecutor = socketCommand;
         }
 
-        public async Task<string> ExecuteCommand(string command)
+        public async Task<Response> ExecuteCommand(string command)
         {
             using (var socketContainer = await _connections.GetSocket())
             {

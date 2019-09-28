@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
+using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Parsers.PrefixParsers
 {
@@ -14,17 +14,21 @@ namespace Gold.Redis.LowLevelClient.Parsers.PrefixParsers
             _prefixParsers = prefixParsers;
         }
 
-        public async Task<string> Parse(StreamReader stream)
+        public async Task<Response> Parse(StreamReader stream)
         {
-            var builder = new StringBuilder();
+            var arguments = new List<Response>();
             var length = int.Parse(await stream.ReadLineAsync());
             for (var i = 0; i < length; i++)
             {
                 var prefixChar = (char)stream.Read();
-                builder.Append($"{await _prefixParsers[prefixChar].Parse(stream)} ");
+                var response = await _prefixParsers[prefixChar].Parse(stream);
+                arguments.Add(response);
             }
 
-            return builder.ToString().TrimEnd();
+            return new ArrayResponse
+            {
+                Responses = arguments
+            };
         }
     }
 }

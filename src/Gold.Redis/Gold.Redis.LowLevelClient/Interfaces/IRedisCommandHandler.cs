@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Interfaces
 {
     public interface IRedisCommandHandler
     {
-        Task<string> ExecuteCommand(string command);
+        Task<Response> ExecuteCommand(string command);
     }
 }
