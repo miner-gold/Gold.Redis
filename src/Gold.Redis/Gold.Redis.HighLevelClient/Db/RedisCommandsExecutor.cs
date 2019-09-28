@@ -1,9 +1,9 @@
-﻿using Gold.Redis.Common.Models.Commands;
-using Gold.Redis.LowLevelClient.Interfaces;
+﻿using Gold.Redis.LowLevelClient.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Gold.Redis.HighLevelClient.Commands;
 using Gold.Redis.HighLevelClient.Interfaces;
 
 namespace Gold.Redis.HighLevelClient.Db

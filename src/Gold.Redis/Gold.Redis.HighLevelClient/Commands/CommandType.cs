@@ -1,4 +1,4 @@
-﻿namespace Gold.Redis.Common.Models.Commands
+﻿namespace Gold.Redis.HighLevelClient.Commands
 {
     public enum CommandType
     {
