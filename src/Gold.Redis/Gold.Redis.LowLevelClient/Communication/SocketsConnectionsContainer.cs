@@ -1,11 +1,10 @@
-﻿using Gold.Redis.Common.Interfaces.Communication;
+using Gold.Redis.Common.Interfaces.Communication;
 using Gold.Redis.Common.Models.Configuration;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Text;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,12 +13,15 @@ namespace Gold.Redis.LowLevelClient.Communication
     public class SocketsConnectionsContainer : IConnectionsContainer
     {
         private readonly RedisConnectionConfiguration _configuration;
+        private readonly IRedisAuthenticator _authenticator;
         private readonly ConcurrentDictionary<Socket, ManualResetEventSlim> _sockets;
 
-        public SocketsConnectionsContainer(RedisConnectionConfiguration configuration)
+        public SocketsConnectionsContainer(
+            RedisConnectionConfiguration configuration,
+            IRedisAuthenticator authenticator)
         {
             _configuration = configuration;
-
+            _authenticator = authenticator;
             _sockets = new ConcurrentDictionary<Socket, ManualResetEventSlim>();
         }
         public async Task<ISocketContainer> GetSocket()
@@ -54,13 +56,20 @@ namespace Gold.Redis.LowLevelClient.Communication
                     return pair;
                 }
             }
-            
+
             return await WaitUntilSocketIsFree();
         }
 
         private async Task<Socket> Connect(Socket socket)
         {
             await socket.ConnectAsync(_configuration.Host, _configuration.Port);
+            if (!string.IsNullOrEmpty(_configuration.Password))
+            {
+                if (!await _authenticator.TryAuthenticate(socket, _configuration.Password))
+                    throw new AuthenticationException("The redis sever did not approved the authentication request. " +
+                        $"Host = {_configuration.Host}");
+            }
+
             return socket;
         }
 
