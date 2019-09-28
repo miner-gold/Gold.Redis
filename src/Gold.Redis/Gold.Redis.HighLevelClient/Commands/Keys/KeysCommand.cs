@@ -1,4 +1,4 @@
-﻿namespace Gold.Redis.Common.Models.Commands.Keys
+﻿namespace Gold.Redis.HighLevelClient.Commands.Keys
 {
     public abstract class KeysCommand : Command
     {

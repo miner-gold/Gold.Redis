@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Gold.Redis.Common.Models.Commands;
+using Gold.Redis.HighLevelClient.Commands;
 
 namespace Gold.Redis.HighLevelClient.Interfaces
 {

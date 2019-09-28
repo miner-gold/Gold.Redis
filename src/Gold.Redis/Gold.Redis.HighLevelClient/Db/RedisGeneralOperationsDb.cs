@@ -1,8 +1,7 @@
-﻿using Gold.Redis.Common.Interfaces.Db;
-using Gold.Redis.Common.Models.Commands.Keys;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gold.Redis.HighLevelClient.Commands.Keys;
 using Gold.Redis.HighLevelClient.Interfaces;
 
 namespace Gold.Redis.HighLevelClient.Db
