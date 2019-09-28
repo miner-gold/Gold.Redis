@@ -1,4 +1,3 @@
-using Gold.Redis.Common.Models.Configuration;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +5,7 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
+using Gold.Redis.Common.Configuration;
 using Gold.Redis.LowLevelClient.Interfaces;
 
 namespace Gold.Redis.LowLevelClient.Communication
