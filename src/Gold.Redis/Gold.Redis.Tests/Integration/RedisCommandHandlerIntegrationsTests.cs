@@ -64,7 +64,7 @@ namespace Gold.Redis.Tests.Integration
             var results = await _client.ExecuteCommand(command);
 
             //Assert
-            results.Should().Be("OK");
+            results.Should().Be(Constants.OkResponse);
         }
 
         [Test]
