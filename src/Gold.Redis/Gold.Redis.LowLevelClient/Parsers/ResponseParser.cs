@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Gold.Redis.Common;
-using Gold.Redis.Common.Interfaces.Parsers;
+using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 
 namespace Gold.Redis.LowLevelClient.Parsers
 {

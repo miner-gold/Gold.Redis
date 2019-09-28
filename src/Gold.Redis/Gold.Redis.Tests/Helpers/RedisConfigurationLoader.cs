@@ -1,6 +1,6 @@
-﻿using Gold.Redis.Common.Models.Configuration;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.IO;
+using Gold.Redis.Common.Configuration;
 
 namespace Gold.Redis.Tests.Helpers
 {

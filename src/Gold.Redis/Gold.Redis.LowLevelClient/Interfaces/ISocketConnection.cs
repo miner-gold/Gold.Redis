@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace Gold.Redis.Common.Interfaces.Communication
+namespace Gold.Redis.LowLevelClient.Interfaces
 {
     public interface ISocketContainer : IDisposable
     {

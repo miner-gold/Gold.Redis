@@ -1,8 +1,8 @@
 ﻿using System.Net.Sockets;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Gold.Redis.Common.Interfaces.Communication;
 using Gold.Redis.LowLevelClient.Communication;
+using Gold.Redis.LowLevelClient.Interfaces;
 using Gold.Redis.Tests.Helpers;
 using Moq;
 using NUnit.Framework;

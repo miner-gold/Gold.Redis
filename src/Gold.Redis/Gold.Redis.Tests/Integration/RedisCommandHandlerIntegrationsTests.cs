@@ -7,7 +7,7 @@ using System.Security.Authentication;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common;
-using Gold.Redis.Common.Models.Configuration;
+using Gold.Redis.Common.Configuration;
 using Gold.Redis.LowLevelClient.Parsers;
 using Gold.Redis.Tests.Helpers;
 
