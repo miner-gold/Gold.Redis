@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Gold.Redis.Common.Interfaces.Db
+namespace Gold.Redis.HighLevelClient.Interfaces
 {
     public interface IRedisDbGeneralOperations
     {

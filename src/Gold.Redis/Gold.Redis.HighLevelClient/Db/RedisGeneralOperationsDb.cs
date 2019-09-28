@@ -3,6 +3,7 @@ using Gold.Redis.Common.Models.Commands.Keys;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gold.Redis.HighLevelClient.Interfaces;
 
 namespace Gold.Redis.HighLevelClient.Db
 {
