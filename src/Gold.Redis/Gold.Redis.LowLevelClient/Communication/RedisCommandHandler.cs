@@ -1,5 +1,5 @@
-﻿using Gold.Redis.Common.Interfaces.Communication;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Gold.Redis.LowLevelClient.Interfaces;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {

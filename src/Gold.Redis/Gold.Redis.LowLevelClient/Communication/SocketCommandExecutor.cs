@@ -1,9 +1,9 @@
-﻿using Gold.Redis.Common.Interfaces.Communication;
-using System;
+﻿using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Gold.Redis.LowLevelClient.Interfaces;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 
 namespace Gold.Redis.LowLevelClient.Communication
