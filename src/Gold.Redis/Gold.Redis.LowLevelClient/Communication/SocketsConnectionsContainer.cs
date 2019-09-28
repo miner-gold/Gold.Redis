@@ -67,7 +67,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             {
                 if (!await _authenticator.TryAuthenticate(socket, _configuration.Password))
                     throw new AuthenticationException("The redis sever did not approved the authentication request. " +
-                        $"Host = {_configuration.Host}, Password = {_configuration.Password}");
+                        $"Host = {_configuration.Host}");
             }
 
             return socket;
