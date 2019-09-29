@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Gold.Redis.Common;
 using Gold.Redis.Common.Configuration;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
