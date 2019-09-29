@@ -4,7 +4,7 @@ using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Interfaces.Parsers
 {
-    public interface IResponseParser
+    public interface IPrefixParser
     {
         Task<Response> Parse(StreamReader stream);
     }

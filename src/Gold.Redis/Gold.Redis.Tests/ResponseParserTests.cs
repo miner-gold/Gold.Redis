@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common;
+using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 using Gold.Redis.LowLevelClient.Parsers;
+using Gold.Redis.LowLevelClient.Parsers.PrefixParsers;
+using Gold.Redis.LowLevelClient.Responses;
 using NUnit.Framework;
 
 namespace Gold.Redis.Tests
@@ -43,7 +45,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            (result as SimpleStringResponse).Response.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -58,7 +60,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            (result as BulkStringResponse).Response.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -66,13 +68,13 @@ namespace Gold.Redis.Tests
         {
             //Arrange
             var response = $"{CommandPrefixes.Integer}6{Constants.CrLf}";
-            var expectedCommand = "6";
+            var expectedCommand = 6;
 
             //Act
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            (result as IntResponse).Response.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -86,7 +88,7 @@ namespace Gold.Redis.Tests
             var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            (result as ErrorResponse).ErrorMessage.Should().Be(expectedCommand);
         }
 
         [Test]
@@ -98,13 +100,22 @@ namespace Gold.Redis.Tests
                            $"foo{Constants.CrLf}" +
                            $"{CommandPrefixes.BulkString}3{Constants.CrLf}" +
                            $"bar{Constants.CrLf}";
-            var expectedCommand = "foo bar";
+            var expectedCommand = new[] {new BulkStringResponse
+            {
+                Response = "foo",
+                StringLength = 3
+            }, new BulkStringResponse
+            {
+                Response = "bar",
+                StringLength = 3
+            }};
 
             //Act
-            var result = await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
+            var result =
+                await _responseParser.Parse(new StreamReader(new MemoryStream(Encoding.ASCII.GetBytes(response))));
 
             //Assert
-            result.Should().Be(expectedCommand);
+            (result as ArrayResponse).Responses.Should().BeEquivalentTo(expectedCommand);
         }
     }
 }
