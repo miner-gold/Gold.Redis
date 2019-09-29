@@ -14,14 +14,13 @@ namespace Gold.Redis.LowLevelClient.Communication
             _socketCommandExecutor = socketCommand;
         }
 
-        public async Task<Response> ExecuteCommand(string command)
+        public async Task<T> ExecuteCommand<T>(string command)
+            where T : Response
         {
             using (var socketContainer = await _connections.GetSocket())
             {
-                return await _socketCommandExecutor.ExecuteCommand(socketContainer.Socket, command);
+                return await _socketCommandExecutor.ExecuteCommand<T>(socketContainer.Socket, command);
             }
         }
-
-       
     }
 }

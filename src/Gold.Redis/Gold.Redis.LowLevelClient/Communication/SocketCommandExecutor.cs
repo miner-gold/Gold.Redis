@@ -21,7 +21,8 @@ namespace Gold.Redis.LowLevelClient.Communication
             _requestBuilder = builder;
             _responseParser = parser;
         }
-        public async Task<Response> ExecuteCommand(Socket socket, string command)
+        public async Task<T> ExecuteCommand<T>(Socket socket, string command)
+            where T : Response
         {
             var bytes = Encoding.ASCII.GetBytes(_requestBuilder.Build(command));
             var bytesAsArraySegment = new ArraySegment<byte>(bytes);
@@ -30,7 +31,7 @@ namespace Gold.Redis.LowLevelClient.Communication
             using (var networkStream = new NetworkStream(socket))
             using (var streamReader = new StreamReader(networkStream))
             {
-                return await _responseParser.Parse(streamReader);
+                return await _responseParser.Parse(streamReader) as T;
             }
         }
     }

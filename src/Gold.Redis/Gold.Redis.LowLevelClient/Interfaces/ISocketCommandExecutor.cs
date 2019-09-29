@@ -6,6 +6,7 @@ namespace Gold.Redis.LowLevelClient.Interfaces
 {
     public interface ISocketCommandExecutor
     {
-        Task<Response> ExecuteCommand(Socket socket, string command);
+        Task<T> ExecuteCommand<T>(Socket socket, string command)
+            where T : Response;
     }
 }

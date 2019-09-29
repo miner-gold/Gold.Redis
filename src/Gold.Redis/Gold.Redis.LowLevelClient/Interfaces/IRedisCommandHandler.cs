@@ -5,6 +5,7 @@ namespace Gold.Redis.LowLevelClient.Interfaces
 {
     public interface IRedisCommandHandler
     {
-        Task<Response> ExecuteCommand(string command);
+        Task<T> ExecuteCommand<T>(string command) 
+            where T : Response;
     }
 }
