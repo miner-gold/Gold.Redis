@@ -31,7 +31,14 @@ namespace Gold.Redis.LowLevelClient.Communication
             using (var networkStream = new NetworkStream(socket))
             using (var streamReader = new StreamReader(networkStream))
             {
-                return await _responseParser.Parse(streamReader) as T;
+                var response = await _responseParser.Parse(streamReader);
+                if (response is T typedResponse)
+                {
+                    return typedResponse;
+                }
+
+                throw new InvalidCastException($"Could not cast response to the desired type." +
+                                               $" Expected type: ${typeof(T)} Actual type: ${typeof(Response)}");
             }
         }
     }
