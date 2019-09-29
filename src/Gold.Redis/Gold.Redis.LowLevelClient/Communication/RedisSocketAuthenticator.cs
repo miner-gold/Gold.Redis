@@ -16,8 +16,10 @@ namespace Gold.Redis.LowLevelClient.Communication
         public async Task<bool> TryAuthenticate(Socket connectionSocket, string password)
         {
             var authCommand = "AUTH " + password;
-            var response = await _socketCommandExecutor.ExecuteCommand<SimpleStringResponse>(connectionSocket, authCommand);
-            return response.Response == Constants.OkResponse;
+            var response = await _socketCommandExecutor.ExecuteCommand<Response>(connectionSocket, authCommand);
+            if(response is SimpleStringResponse simpleResponse)
+                return simpleResponse.Response == Constants.OkResponse;
+            return false;
         }
     }
 }

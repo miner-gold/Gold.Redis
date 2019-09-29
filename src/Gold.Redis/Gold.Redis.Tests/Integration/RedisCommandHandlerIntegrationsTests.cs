@@ -98,10 +98,10 @@ namespace Gold.Redis.Tests.Integration
 
             //Act 
             await _client.ExecuteCommand<SimpleStringResponse>(setCommand);
-            var result = await _client.ExecuteCommand<BulkStringResponse>(existsCommand);
+            var result = await _client.ExecuteCommand<IntResponse>(existsCommand);
 
             //Assert
-            result.Response.Should().Be($"1");
+            result.Response.Should().Be(1);
         }
         [Test]
         public async Task ExecuteCommand_ExistOnKeyThatDoesNotExits_ShouldReturnZero()
@@ -111,10 +111,10 @@ namespace Gold.Redis.Tests.Integration
             var existsCommand = $"EXISTS {randomKey}";
 
             //Act 
-            var result = await _client.ExecuteCommand<SimpleStringResponse>(existsCommand);
+            var result = await _client.ExecuteCommand<IntResponse>(existsCommand);
 
             //Assert
-            result.Response.Should().Be($"0");
+            result.Response.Should().Be(0);
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Gold.Redis.Tests.Integration
             var command = "PING";
 
             //Act
-            Assert.ThrowsAsync<AuthenticationException>(async() =>await _client.ExecuteCommand<SimpleStringResponse>(command));
+            Assert.ThrowsAsync<AuthenticationException>(async() =>await _client.ExecuteCommand<ErrorResponse>(command));
         }
     }
 }
