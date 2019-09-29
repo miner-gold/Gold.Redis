@@ -118,7 +118,7 @@ namespace Gold.Redis.Tests.Integration
         }
 
         [Test]
-        public async Task ExecuteCommand_PingWhenBadPassword_ShouldThrowAuthenticationError()
+        public void ExecuteCommand_PingWhenBadPassword_ShouldThrowAuthenticationError()
         {
             //Arrange 
             var randomPassword = Guid.NewGuid().ToString();
