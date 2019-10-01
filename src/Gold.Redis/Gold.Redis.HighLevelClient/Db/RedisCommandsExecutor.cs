@@ -5,35 +5,28 @@ using System.IO;
 using System.Threading.Tasks;
 using Gold.Redis.HighLevelClient.Commands;
 using Gold.Redis.HighLevelClient.Interfaces;
+using Gold.Redis.LowLevelClient.Responses;
+using System.Collections.Generic;
 
 namespace Gold.Redis.HighLevelClient.Db
 {
     public class RedisCommandsExecutor : IRedisCommandExecutor
     {
         private readonly IRedisCommandHandler _redisCommandHandler;
-        private readonly JsonSerializer _jsonSerializer;
-
         public RedisCommandsExecutor(
-            IRedisCommandHandler redisConnection,
-            JsonSerializerSettings serializerSettings = null)
+            IRedisCommandHandler redisConnection)
         {
             _redisCommandHandler = redisConnection;
-            _jsonSerializer = JsonSerializer.Create(serializerSettings);
         }
-        public async Task<T> Execute<T>(Command command)
+        public async Task<T> Execute<T>(Command command) where T: Response
         {
             var commandStr = command.GetCommandString();
             if (string.IsNullOrEmpty(commandStr))
             {
-                throw new InvalidOperationException("Connot execute null command");
+                throw new InvalidOperationException("Can not execute null command");
             }
 
-            var responseStr = await _redisCommandHandler.ExecuteCommand(commandStr);
-            using(var stringReader = new StringReader(responseStr))
-            using(var jsonReader = new JsonTextReader(stringReader))
-            {
-                return _jsonSerializer.Deserialize<T>(jsonReader);
-            }
+            return await _redisCommandHandler.ExecuteCommand<T>(commandStr);
         }
     }
 }
