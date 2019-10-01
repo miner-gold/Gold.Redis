@@ -32,13 +32,22 @@ namespace Gold.Redis.LowLevelClient.Communication
             using (var streamReader = new StreamReader(networkStream))
             {
                 var response = await _responseParser.Parse(streamReader);
+
+                if (response == null)
+                    return null;
+
                 if (response is T typedResponse)
                 {
                     return typedResponse;
                 }
 
+                if (response is ErrorResponse errorResponse)
+                {
+                    throw new Exception(errorResponse.ErrorMessage);
+                }
+
                 throw new InvalidCastException($"Could not cast response to the desired type." +
-                                               $" Expected type: ${typeof(T)} Actual type: ${typeof(Response)}");
+                                               $" Expected type: ${typeof(T)} Actual type: ${response?.GetType()}");
             }
         }
     }
