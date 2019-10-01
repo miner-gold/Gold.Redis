@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gold.Redis.HighLevelClient.Commands.Keys
+﻿namespace Gold.Redis.HighLevelClient.Commands.Keys
 {
     public class DeleteKeyCommand : BaseKeyCommand
     {

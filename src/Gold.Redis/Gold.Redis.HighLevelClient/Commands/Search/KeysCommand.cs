@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gold.Redis.HighLevelClient.Commands.Search
+﻿namespace Gold.Redis.HighLevelClient.Commands.Search
 {
     public class KeysCommand : Command
     {

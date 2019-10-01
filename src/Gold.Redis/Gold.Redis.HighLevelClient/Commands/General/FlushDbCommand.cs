@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gold.Redis.HighLevelClient.Commands.General
+﻿namespace Gold.Redis.HighLevelClient.Commands.General
 {
     public class FlushDbCommand : Command
     {

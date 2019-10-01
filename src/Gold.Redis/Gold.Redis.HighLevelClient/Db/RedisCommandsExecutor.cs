@@ -1,12 +1,9 @@
 ﻿using Gold.Redis.LowLevelClient.Interfaces;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Gold.Redis.HighLevelClient.Commands;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.LowLevelClient.Responses;
-using System.Collections.Generic;
 
 namespace Gold.Redis.HighLevelClient.Db
 {

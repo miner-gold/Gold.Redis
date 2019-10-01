@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Gold.Redis.Common;
 using Gold.Redis.HighLevelClient.Db;
 using Gold.Redis.HighLevelClient.ResponseParsers;
-using Gold.Redis.HighLevelClient.Utils;
 using Gold.Redis.LowLevelClient.Communication;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 using Gold.Redis.LowLevelClient.Parsers;
 using Gold.Redis.LowLevelClient.Parsers.PrefixParsers;
 using Gold.Redis.Tests.Helpers;
-using NUnit.Framework;
 
 namespace Gold.Redis.Tests.Integration.DbCommands
 {
