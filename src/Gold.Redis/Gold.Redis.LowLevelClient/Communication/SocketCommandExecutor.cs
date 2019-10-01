@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.LowLevelClient.Interfaces;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
+using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
@@ -20,7 +21,8 @@ namespace Gold.Redis.LowLevelClient.Communication
             _requestBuilder = builder;
             _responseParser = parser;
         }
-        public async Task<string> ExecuteCommand(Socket socket, string command)
+        public async Task<T> ExecuteCommand<T>(Socket socket, string command)
+            where T : Response
         {
             var bytes = Encoding.ASCII.GetBytes(_requestBuilder.Build(command));
             var bytesAsArraySegment = new ArraySegment<byte>(bytes);
@@ -29,7 +31,14 @@ namespace Gold.Redis.LowLevelClient.Communication
             using (var networkStream = new NetworkStream(socket))
             using (var streamReader = new StreamReader(networkStream))
             {
-                return await _responseParser.Parse(streamReader);
+                var response = await _responseParser.Parse(streamReader);
+                if (response is T typedResponse)
+                {
+                    return typedResponse;
+                }
+
+                throw new InvalidCastException($"Could not cast response to the desired type." +
+                                               $" Expected type: ${typeof(T)} Actual type: ${typeof(Response)}");
             }
         }
     }

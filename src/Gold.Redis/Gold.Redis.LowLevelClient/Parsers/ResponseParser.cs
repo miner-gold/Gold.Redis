@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
+using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Parsers
 {
@@ -13,7 +14,7 @@ namespace Gold.Redis.LowLevelClient.Parsers
             _prefixParsers = prefixParsers;
         }
 
-        public async Task<string> Parse(StreamReader stream)
+        public async Task<Response> Parse(StreamReader stream)
         {
             var firstChar = (char)stream.Read();
             return await _prefixParsers[firstChar].Parse(stream);
