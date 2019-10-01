@@ -22,7 +22,7 @@ namespace Gold.Redis.Tests.Integration.DbCommands
             //Act
             await _client.SetKey(randomKey, randomKey, expiration);
             var firstCheck = await _client.IsKeyExists(randomKey);
-            await Task.Delay(expiration);
+            await Task.Delay(expiration + TimeSpan.FromSeconds(0.5));
             var secondCheck = await _client.IsKeyExists(randomKey);
 
             //Assert
