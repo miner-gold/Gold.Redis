@@ -22,7 +22,7 @@ namespace Gold.Redis.Tests.Integration
         private RedisGeneralOperationsDb _client;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var prefixParsers = new Dictionary<char, IPrefixParser>
             {
@@ -44,7 +44,7 @@ namespace Gold.Redis.Tests.Integration
 
             var commandExecutor = new RedisCommandsExecutor(lowLevelClient);
             _client = new RedisGeneralOperationsDb(commandExecutor, new JsonResponseParser());
-            _client.FlushDb().GetAwaiter().GetResult();
+            await _client.FlushDb();
         }
 
         #region KeyExists
