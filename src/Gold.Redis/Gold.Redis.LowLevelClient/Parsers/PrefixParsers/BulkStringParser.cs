@@ -13,6 +13,9 @@ namespace Gold.Redis.LowLevelClient.Parsers.PrefixParsers
             var responseLength = await stream.ReadLineAsync();
             if (int.TryParse(responseLength, out var length))
             {
+                if (length == -1)
+                    return null;
+
                 return new BulkStringResponse
                 {
                     StringLength = length,

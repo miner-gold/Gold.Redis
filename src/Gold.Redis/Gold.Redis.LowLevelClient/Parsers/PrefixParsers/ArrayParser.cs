@@ -18,6 +18,11 @@ namespace Gold.Redis.LowLevelClient.Parsers.PrefixParsers
         {
             var arguments = new List<Response>();
             var length = int.Parse(await stream.ReadLineAsync());
+            if (length == -1)
+            {
+                return null;
+            }
+
             for (var i = 0; i < length; i++)
             {
                 var prefixChar = (char)stream.Read();
