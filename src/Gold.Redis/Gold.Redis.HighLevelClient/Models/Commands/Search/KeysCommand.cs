@@ -1,4 +1,4 @@
-﻿namespace Gold.Redis.HighLevelClient.Commands.Search
+﻿namespace Gold.Redis.HighLevelClient.Models.Commands.Search
 {
     public class KeysCommand : Command
     {

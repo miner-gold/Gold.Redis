@@ -1,7 +1,7 @@
 ﻿using System;
 using Gold.Redis.HighLevelClient.Utils;
 
-namespace Gold.Redis.HighLevelClient.Commands.Keys
+namespace Gold.Redis.HighLevelClient.Models.Commands.Keys
 {
     public class SetKeyCommand : BaseKeyCommand
     {

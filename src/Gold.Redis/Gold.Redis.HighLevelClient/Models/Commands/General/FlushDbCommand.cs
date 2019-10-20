@@ -1,4 +1,4 @@
-﻿namespace Gold.Redis.HighLevelClient.Commands.General
+﻿namespace Gold.Redis.HighLevelClient.Models.Commands.General
 {
     public class FlushDbCommand : Command
     {
