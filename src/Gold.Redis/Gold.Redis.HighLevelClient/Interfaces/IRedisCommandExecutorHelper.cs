@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Gold.Redis.HighLevelClient.Commands;
+using Gold.Redis.HighLevelClient.Models.Commands;
 
 namespace Gold.Redis.HighLevelClient.Interfaces
 {
