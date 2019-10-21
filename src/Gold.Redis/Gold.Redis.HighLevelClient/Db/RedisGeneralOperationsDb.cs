@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gold.Redis.Common;
-using Gold.Redis.HighLevelClient.Commands.General;
-using Gold.Redis.HighLevelClient.Commands.Keys;
-using Gold.Redis.HighLevelClient.Commands.Search;
 using Gold.Redis.HighLevelClient.Interfaces;
-using Gold.Redis.HighLevelClient.Utils;
+using Gold.Redis.HighLevelClient.Models.Commands.General;
+using Gold.Redis.HighLevelClient.Models.Commands.Keys;
+using Gold.Redis.HighLevelClient.Models.Commands.Search;
+using Gold.Redis.HighLevelClient.Models.Utils;
 using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.HighLevelClient.Db

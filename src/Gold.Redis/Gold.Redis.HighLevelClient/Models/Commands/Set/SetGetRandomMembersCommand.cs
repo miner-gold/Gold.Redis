@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Gold.Redis.HighLevelClient.Models.Commands.Set
 {

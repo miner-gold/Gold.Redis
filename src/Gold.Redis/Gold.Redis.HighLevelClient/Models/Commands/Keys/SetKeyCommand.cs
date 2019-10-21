@@ -1,5 +1,5 @@
 ﻿using System;
-using Gold.Redis.HighLevelClient.Utils;
+using Gold.Redis.HighLevelClient.Models.Utils;
 
 namespace Gold.Redis.HighLevelClient.Models.Commands.Keys
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Gold.Redis.HighLevelClient.Utils;
+using Gold.Redis.HighLevelClient.Models.Utils;
 using NUnit.Framework;
 
 namespace Gold.Redis.Tests.Integration.DbCommands

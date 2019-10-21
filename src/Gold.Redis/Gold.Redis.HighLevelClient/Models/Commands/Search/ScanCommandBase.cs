@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace Gold.Redis.HighLevelClient.Models.Commands.Search
+﻿namespace Gold.Redis.HighLevelClient.Models.Commands.Search
 {
     public abstract class ScanCommandBase : Command
     {
