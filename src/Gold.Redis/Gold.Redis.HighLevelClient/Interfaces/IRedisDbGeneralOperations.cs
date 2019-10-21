@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gold.Redis.HighLevelClient.Utils;
+using Gold.Redis.HighLevelClient.Models.Utils;
 
 namespace Gold.Redis.HighLevelClient.Interfaces
 {

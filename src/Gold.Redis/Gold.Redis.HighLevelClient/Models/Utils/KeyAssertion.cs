@@ -1,4 +1,4 @@
-﻿namespace Gold.Redis.HighLevelClient.Utils
+﻿namespace Gold.Redis.HighLevelClient.Models.Utils
 {
     public enum KeyAssertion
     {

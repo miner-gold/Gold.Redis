@@ -1,4 +1,4 @@
-﻿namespace Gold.Redis.HighLevelClient.Commands
+﻿namespace Gold.Redis.HighLevelClient.Models.Commands
 {
     public abstract class Command
     {

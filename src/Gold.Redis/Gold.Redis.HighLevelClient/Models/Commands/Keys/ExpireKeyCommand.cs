@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gold.Redis.HighLevelClient.Commands.Keys
+namespace Gold.Redis.HighLevelClient.Models.Commands.Keys
 {
     public class ExpireKeyCommand : BaseKeyCommand
     {
