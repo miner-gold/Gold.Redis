@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gold.Redis.Common;
 using Gold.Redis.HighLevelClient.Db;
+using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.ResponseParsers;
 using Gold.Redis.LowLevelClient.Communication;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
@@ -14,7 +15,7 @@ namespace Gold.Redis.Tests.Integration.DbCommands
 {
     public abstract class RedisDataBaseClientIntegrationTestsBase
     {
-        protected RedisGeneralOperationsDb _client;
+        protected IRedisDb _client;
 
         public async Task TestsSetUp()
         {
@@ -25,19 +26,29 @@ namespace Gold.Redis.Tests.Integration.DbCommands
                 {CommandPrefixes.Integer, new IntegerParser()},
                 {CommandPrefixes.Error, new ErrorParser() }
             };
-            var responseParser = new ResponseParser(prefixParsers
+            var parsers = new ResponseParser(prefixParsers
                 .Concat(new[]
                     {new KeyValuePair<char, IPrefixParser>(CommandPrefixes.Array, new ArrayParser(prefixParsers))})
                 .ToDictionary(d => d.Key, d => d.Value));
+            var responseParser = new JsonResponseParser();
+
             var configuration = RedisConfigurationLoader.GetConfiguration();
-            var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), responseParser);
+            var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), parsers);
             var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
             var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
             var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
 
 
+
             var commandExecutor = new RedisCommandsExecutor(lowLevelClient);
-            _client = new RedisGeneralOperationsDb(commandExecutor, new JsonResponseParser());
+            var commandExecutorHelper = new RedisCommandExecutorHelper(commandExecutor, responseParser);
+            var redisScannerHelper = new RedisScanner(commandExecutor);
+
+            var generalDb = new RedisGeneralOperationsDb(commandExecutor);
+            var keyDb = new RedisKeysDb(commandExecutor, responseParser);
+            var setDb = new RedisSetDb(commandExecutorHelper, responseParser, redisScannerHelper);
+
+            _client = new RedisDb(generalDb, keyDb, setDb);
             await _client.FlushDb();
         }
     }
