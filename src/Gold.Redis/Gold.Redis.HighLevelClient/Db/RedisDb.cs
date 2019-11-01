@@ -14,7 +14,7 @@ namespace Gold.Redis.HighLevelClient.Db
         private readonly IRedisGeneralOperationsDb _generalOperationsDb;
 
         public RedisDb(
-            IRedisGeneralOperationsDb generalOperationsDb, 
+            IRedisGeneralOperationsDb generalOperationsDb,
             IRedisKeysDb keysDb,
             IRedisSetDb setDb)
         {
@@ -23,15 +23,22 @@ namespace Gold.Redis.HighLevelClient.Db
             _setDb = setDb;
         }
 
-        public async Task<bool> IsKeyExists(string key) => await _generalOperationsDb.IsKeyExists(key);
-        public async Task<bool> SetKeyExpire(string key, TimeSpan span) => await _generalOperationsDb.SetKeyExpire(key, span);
-        public async Task<IEnumerable<string>> GetMatchingKeys(string pattern = "*") => await _generalOperationsDb.GetMatchingKeys(pattern);
-        public async Task<bool> DeleteKey(string key) => await _generalOperationsDb.DeleteKey(key);
+        #region Db Operations
         public async Task<bool> FlushDb(bool isAsync = false) => await _generalOperationsDb.FlushDb(isAsync);
+        #endregion
 
+        #region Keys Operations
+        public async Task<bool> DeleteKey(string key) => await _generalOperationsDb.DeleteKey(key);
         public async Task<bool> SetKey<T>(string key, T value, TimeSpan? expirySpan = null, KeyAssertion assertion = KeyAssertion.Any) =>
             await _keysDb.SetKey(key, value, expirySpan, assertion);
         public async Task<T> Get<T>(string key) => await _keysDb.Get<T>(key);
+        public async Task<bool> IsKeyExists(string key) => await _generalOperationsDb.IsKeyExists(key);
+        public async Task<bool> SetKeyExpire(string key, TimeSpan span) => await _generalOperationsDb.SetKeyExpire(key, span);
+        public async Task<IEnumerable<string>> GetMatchingKeys(string pattern = "*") => await _generalOperationsDb.GetMatchingKeys(pattern);
+
+        #endregion
+
+        #region  Set Operations
 
         public async Task<bool> SetAdd<T>(string key, T item) => await _setDb.SetAdd<T>(key, item);
         public async Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items) => await _setDb.SetAddMultiple<T>(key, items);
@@ -59,5 +66,6 @@ namespace Gold.Redis.HighLevelClient.Db
             await _setDb.UnionSetsStore(destinationKey, keys);
         public async Task<IEnumerable<T>> SetScan<T>(string key, string pattern = null, int? countHint = null) =>
             await _setDb.SetScan<T>(key, pattern, countHint);
+        #endregion
     }
 }
