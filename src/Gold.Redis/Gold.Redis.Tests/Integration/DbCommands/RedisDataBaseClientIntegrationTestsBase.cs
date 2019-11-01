@@ -10,6 +10,7 @@ using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 using Gold.Redis.LowLevelClient.Parsers;
 using Gold.Redis.LowLevelClient.Parsers.PrefixParsers;
 using Gold.Redis.Tests.Helpers;
+using NUnit.Framework;
 
 namespace Gold.Redis.Tests.Integration.DbCommands
 {
@@ -17,7 +18,8 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     {
         protected IRedisDb _client;
 
-        public async Task TestsSetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
             var prefixParsers = new Dictionary<char, IPrefixParser>
             {
@@ -38,8 +40,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
             var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
             var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
 
-
-
             var commandExecutor = new RedisCommandsExecutor(lowLevelClient);
             var commandExecutorHelper = new RedisCommandExecutorHelper(commandExecutor, responseParser);
             var redisScannerHelper = new RedisScanner(commandExecutor);
@@ -49,6 +49,11 @@ namespace Gold.Redis.Tests.Integration.DbCommands
             var setDb = new RedisSetDb(commandExecutorHelper, responseParser, redisScannerHelper);
 
             _client = new RedisDb(generalDb, keyDb, setDb);
+        }
+
+        [SetUp]
+        public async Task TestsSetUp()
+        {
             await _client.FlushDb();
         }
     }

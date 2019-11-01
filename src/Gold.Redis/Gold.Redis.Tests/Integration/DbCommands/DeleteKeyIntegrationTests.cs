@@ -8,9 +8,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     [TestFixture(Category = "DeleteKey")]
     public class DeleteKeyIntegrationTests : RedisDataBaseClientIntegrationTestsBase
     {
-        [SetUp]
-        public async Task Setup() => await TestsSetUp();
-
         [Test]
         public async Task DeleteKey_ShouldDeleteTheExistingKey()
         {

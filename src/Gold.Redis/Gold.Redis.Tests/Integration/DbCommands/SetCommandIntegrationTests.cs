@@ -9,9 +9,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     [TestFixture(Category = "Set")]
     public class SetCommandIntegrationTests : RedisDataBaseClientIntegrationTestsBase
     {
-        [SetUp]
-        public async Task SetUp() => await TestsSetUp();
-
         [Test]
         public async Task Set_WithTimeout_ShouldHaveTheKeyForTwoSecondsAndThenLossIs()
         {

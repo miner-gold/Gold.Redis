@@ -8,9 +8,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     [TestFixture(Category = "SetKeyExpire")]
     public class SetKeyExpireIntegrationTests : RedisDataBaseClientIntegrationTestsBase
     {
-        [SetUp]
-        public async Task SetUp() => await TestsSetUp();
-
         [Test]
         public async Task SetKeyExpire_ShouldHaveTheKeyForFourSecondsAndThenLossIs()
         {
