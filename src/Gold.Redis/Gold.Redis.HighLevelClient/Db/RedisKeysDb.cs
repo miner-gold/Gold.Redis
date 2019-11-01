@@ -20,13 +20,6 @@ namespace Gold.Redis.HighLevelClient.Db
             _stringResponseParser = stringResponseParser;
         }
 
-        /// <summary>
-        /// Get the value of a key,
-        /// If the key does not exists in the db, the default value of T will be returned
-        /// </summary>
-        /// <typeparam name="T">The expected Type of the returned value</typeparam>
-        /// <param name="key">The redis key</param>
-        /// <returns></returns>
         public async Task<T> Get<T>(string key)
         {
             var command = new GetKeyValueCommand
