@@ -9,7 +9,7 @@ namespace Gold.Redis.HighLevelClient.Models.Commands.Keys
         public KeyAssertion Assertion { get; set; }
         public TimeSpan? ExpirySpan { get; set; }
         public string Value { get; set; }
-        public override string GetCommandString() => $"SET {Key} \"{Value}\"{GetExpiratoryMillisecondsString()}{GetKeyAssertionString()}";
+        public override string GetCommandString() => $"SET {Key} {Value}{GetExpiratoryMillisecondsString()}{GetKeyAssertionString()}";
 
         private string GetKeyAssertionString()
         {
