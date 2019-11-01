@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Gold.Redis.Common;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 using Gold.Redis.LowLevelClient.Responses;
 
@@ -26,8 +27,12 @@ namespace Gold.Redis.LowLevelClient.Parsers.PrefixParsers
             for (var i = 0; i < length; i++)
             {
                 var prefixChar = (char)stream.Read();
-                var response = await _prefixParsers[prefixChar].Parse(stream);
-                arguments.Add(response);
+
+                if (prefixChar == CommandPrefixes.Array)
+                    arguments.Add(await Parse(stream));
+                else
+                    arguments.Add(await _prefixParsers[prefixChar].Parse(stream));
+
             }
 
             return new ArrayResponse
