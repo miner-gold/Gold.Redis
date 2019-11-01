@@ -18,7 +18,7 @@ namespace Gold.Redis.HighLevelClient.Interfaces
         /// If key does not exist, a new set is created before adding the specified members
         /// <param name="key">the identifier of the SET</param>
         /// </summary>
-        Task<bool> SetAdd<T>(string key, IEnumerable<T> items);
+        Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items);
 
         /// <summary>
         /// Returns the number of elements of the set stored at key
@@ -56,7 +56,7 @@ namespace Gold.Redis.HighLevelClient.Interfaces
         /// <summary>
         /// This command is equal to SetIntersect, but instead of returning the resulting set, it is stored in destination
         /// </summary>
-        /// <param name="resultingSetKey">The new set with the DIFF operation result</param>
+        /// <param name="resultingSetKey">The new set with the INTERSECT operation result</param>
         /// <param name="keys"></param>
         /// <returns>The number of items that are in the result set</returns>
         Task<int> SetIntersectStore(string resultingSetKey, params string[] keys);
