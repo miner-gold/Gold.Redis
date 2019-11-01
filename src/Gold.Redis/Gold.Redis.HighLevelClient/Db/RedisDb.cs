@@ -34,7 +34,7 @@ namespace Gold.Redis.HighLevelClient.Db
         public async Task<T> Get<T>(string key) => await _keysDb.Get<T>(key);
 
         public async Task<bool> SetAdd<T>(string key, T item) => await _setDb.SetAdd<T>(key, item);
-        public async Task<bool> SetAdd<T>(string key, IEnumerable<T> items) => await _setDb.SetAdd<T>(key, items);
+        public async Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items) => await _setDb.SetAddMultiple<T>(key, items);
         public async Task<int> SetCount(string key) => await _setDb.SetCount(key);
         public async Task<IEnumerable<T>> SetDiff<T>(string firstKey, params string[] keys) =>
             await _setDb.SetDiff<T>(firstKey, keys);
