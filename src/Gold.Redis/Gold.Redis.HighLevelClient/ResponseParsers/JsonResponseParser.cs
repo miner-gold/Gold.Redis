@@ -25,7 +25,7 @@ namespace Gold.Redis.HighLevelClient.ResponseParsers
             if (response == null)
                 return default(T);
 
-            if (typeof(T) == typeof(string) || typeof(T) == typeof(String))
+            if (typeof(T) == typeof(string))
             {
                 //In order to simply deserialize string to string
                 response = "\"" + response + "\"";
@@ -47,7 +47,7 @@ namespace Gold.Redis.HighLevelClient.ResponseParsers
                 return itemStr;
             if (item is char itemChar)
                 return itemChar.ToString();
-            
+
             StringBuilder sb = new StringBuilder();
             using (var sr = new StringWriter(sb))
             using (var jsonTextWriter = new JsonTextWriter(sr))
