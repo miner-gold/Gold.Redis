@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Newtonsoft.Json;
@@ -24,6 +25,12 @@ namespace Gold.Redis.HighLevelClient.ResponseParsers
             if (response == null)
                 return default(T);
 
+            if (typeof(T) == typeof(string))
+            {
+                //In order to simply deserialize string to string
+                response = "\"" + response + "\"";
+            }
+
             using (var stringReader = new StringReader(response))
             using (var jsonReader = new JsonTextReader(stringReader))
             {
@@ -35,8 +42,11 @@ namespace Gold.Redis.HighLevelClient.ResponseParsers
         {
             if (item == null)
                 return null;
+
             if (item is string itemStr)
                 return itemStr;
+            if (item is char itemChar)
+                return itemChar.ToString();
 
             StringBuilder sb = new StringBuilder();
             using (var sr = new StringWriter(sb))

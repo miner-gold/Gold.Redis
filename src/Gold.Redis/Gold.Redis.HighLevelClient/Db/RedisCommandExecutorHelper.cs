@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gold.Redis.Common;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Commands;
 using Gold.Redis.LowLevelClient.Responses;
@@ -34,7 +35,7 @@ namespace Gold.Redis.HighLevelClient.Db
             var response = await _executor.Execute<ArrayResponse>(cmd);
             return response.Responses.Select(res =>
             {
-                var strResponse = res as SimpleStringResponse;
+                var strResponse = res as BulkStringResponse;
                 return _parser.Parse<T>(strResponse?.Response);
             });
         }

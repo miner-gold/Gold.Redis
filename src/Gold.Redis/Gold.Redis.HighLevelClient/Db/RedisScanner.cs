@@ -31,10 +31,10 @@ namespace Gold.Redis.HighLevelClient.Db
                 if (responsesList.Count < 2)
                     return null;
 
-                cursor = (responsesList[0] as IntResponse).Response;
+                cursor = int.Parse((responsesList[0] as BulkStringResponse).Response);
                 foreach (var innerResponse in (responsesList[1] as ArrayResponse).Responses)
                 {
-                    result.Add((innerResponse as SimpleStringResponse).Response);
+                    result.Add((innerResponse as BulkStringResponse).Response);
                 }
             }
             while (cursor != 0);

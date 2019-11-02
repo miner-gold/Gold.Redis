@@ -4,6 +4,6 @@
     {
         public string NewSetKey { get; set; }
         public string[] SetsKeys { get; set; }
-        public override string GetCommandString() => $"SINTER {NewSetKey} {string.Join(" ", SetsKeys)}";
+        public override string GetCommandString() => $"SINTERSTORE {NewSetKey} {string.Join(" ", SetsKeys)}";
     }
 }

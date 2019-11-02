@@ -8,9 +8,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     [TestFixture(Category = "Get")]
     public class GetCommandIntegrationTests : RedisDataBaseClientIntegrationTestsBase
     {
-        [SetUp]
-        public async Task Setup() => await TestsSetUp();
-
         [Test]
         public async Task Get_KeyExists_ShouldReturnTheInsertedValue()
         {

@@ -8,9 +8,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     [TestFixture(Category = "GetMatchingKeys")]
     public class GetMatchingKeysIntegrationTests : RedisDataBaseClientIntegrationTestsBase
     {
-        [SetUp]
-        public async Task SetUp() => await TestsSetUp();
-
         [Test]
         public async Task GetMatchingKeys_ShouldReturnAllKeys_WhenPatternIsAll()
         {
