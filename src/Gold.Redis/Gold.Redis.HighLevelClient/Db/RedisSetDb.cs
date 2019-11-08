@@ -23,9 +23,9 @@ namespace Gold.Redis.HighLevelClient.Db
             _scanner = scanner;
         }
 
-        public async Task<bool> SetAdd<T>(string key, T item) => await SetAdd<T>(key, new List<T> { item });
+        public async Task<bool> SetAdd<T>(string key, T item) => await SetAddMultiple<T>(key, new List<T>() {item});
 
-        public async Task<bool> SetAdd<T>(string key, IEnumerable<T> items)
+        public async Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items)
         {
             var itemsStr = items.Select(item => _parser.Stringify(item)).Distinct().ToList();
             var command = new SetAddCommand

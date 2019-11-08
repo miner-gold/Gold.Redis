@@ -8,9 +8,6 @@ namespace Gold.Redis.Tests.Integration.DbCommands
     [TestFixture(Category = "KeyExists")]
     public class KeyExistsCommandsIntegrationTests : RedisDataBaseClientIntegrationTestsBase
     {
-        [SetUp]
-        public async Task SetUp() => await TestsSetUp();
-
         [Test]
         public async Task IsKeyExist_KeyDoesNotExist_ShouldReturnFalse()
         {
