@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Gold.Redis.Common;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;

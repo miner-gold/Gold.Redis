@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common;
-using Gold.Redis.HighLevelClient.Db;
-using Gold.Redis.HighLevelClient.Models.Utils;
 using Gold.Redis.HighLevelClient.Pipeline;
 using Gold.Redis.HighLevelClient.ResponseParsers;
 using Gold.Redis.LowLevelClient.Communication;

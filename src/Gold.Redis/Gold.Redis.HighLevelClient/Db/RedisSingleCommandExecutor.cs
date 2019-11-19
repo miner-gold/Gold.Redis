@@ -1,7 +1,6 @@
 ﻿using Gold.Redis.LowLevelClient.Interfaces;
 using System;
 using System.Threading.Tasks;
-using Gold.Redis.Common.Interfaces.Pipelining;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Commands;
 using Gold.Redis.LowLevelClient.Responses;

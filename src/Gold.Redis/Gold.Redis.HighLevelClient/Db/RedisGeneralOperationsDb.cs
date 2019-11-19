@@ -7,7 +7,6 @@ using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Commands.General;
 using Gold.Redis.HighLevelClient.Models.Commands.Keys;
 using Gold.Redis.HighLevelClient.Models.Commands.Search;
-using Gold.Redis.HighLevelClient.Models.Utils;
 using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.HighLevelClient.Db

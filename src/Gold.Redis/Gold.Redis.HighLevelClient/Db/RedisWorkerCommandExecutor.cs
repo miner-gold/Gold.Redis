@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.Common.Interfaces.Pipelining;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Commands;
-using Gold.Redis.HighLevelClient.Models.Utils;
 using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.HighLevelClient.Db

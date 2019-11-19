@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Utils;
@@ -23,16 +22,22 @@ namespace Gold.Redis.HighLevelClient.Db
             _setDb = setDb;
         }
 
+        #region General db operations
         public async Task<bool> IsKeyExists(string key) => await _generalOperationsDb.IsKeyExists(key);
         public async Task<bool> SetKeyExpire(string key, TimeSpan span) => await _generalOperationsDb.SetKeyExpire(key, span);
         public async Task<IEnumerable<string>> GetMatchingKeys(string pattern = "*") => await _generalOperationsDb.GetMatchingKeys(pattern);
         public async Task<bool> DeleteKey(string key) => await _generalOperationsDb.DeleteKey(key);
         public async Task<bool> FlushDb(bool isAsync = false) => await _generalOperationsDb.FlushDb(isAsync);
         public async Task<bool> Ping() => await _generalOperationsDb.Ping();
+        #endregion
 
+        #region Key operations
         public async Task<bool> SetKey<T>(string key, T value, TimeSpan? expirySpan = null, KeyAssertion assertion = KeyAssertion.Any) =>
             await _keysDb.SetKey(key, value, expirySpan, assertion);
         public async Task<T> Get<T>(string key) => await _keysDb.Get<T>(key);
+        #endregion
+
+        #region Sets operations
 
         public async Task<bool> SetAdd<T>(string key, T item) => await _setDb.SetAdd<T>(key, item);
 
@@ -61,5 +66,6 @@ namespace Gold.Redis.HighLevelClient.Db
             await _setDb.UnionSetsStore(destinationKey, keys);
         public async Task<IEnumerable<T>> SetScan<T>(string key, string pattern = null, int? countHint = null) =>
             await _setDb.SetScan<T>(key, pattern, countHint);
+        #endregion
     }
 }
