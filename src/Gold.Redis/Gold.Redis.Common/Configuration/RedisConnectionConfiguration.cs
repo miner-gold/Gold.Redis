@@ -6,5 +6,7 @@
         public int Port { get; set; } = 6379;
         public string Password { get; set; }
         public int MaxConnections { get; set; } = 1;
+        public bool UsePiplining { get; set; }
+        public RedisPipelineConfiguration Pipeline { get; set; }
     }
 }
