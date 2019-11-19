@@ -1,7 +1,9 @@
-﻿namespace Gold.Redis.LowLevelClient.Interfaces.Parsers
+﻿using System.Collections.Generic;
+
+namespace Gold.Redis.LowLevelClient.Interfaces.Parsers
 {
     public interface IRequestBuilder
     {
-        string Build(string request);
+        string Build(params string[] requests);
     }
 }
