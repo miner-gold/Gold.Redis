@@ -40,7 +40,7 @@ namespace Gold.Redis.Tests.Integration.DbCommands
             var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
             var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
 
-            var commandExecutor = new RedisCommandsExecutor(lowLevelClient);
+            var commandExecutor = new RedisSingleCommandExecutor(lowLevelClient);
             var commandExecutorHelper = new RedisCommandExecutorHelper(commandExecutor, responseParser);
             var redisScannerHelper = new RedisScanner(commandExecutor);
 
