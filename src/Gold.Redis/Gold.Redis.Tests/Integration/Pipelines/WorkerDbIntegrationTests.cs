@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.Common;
+using Gold.Redis.Common.Configuration;
 using Gold.Redis.Common.Utils;
 using Gold.Redis.HighLevelClient.Db;
 using Gold.Redis.HighLevelClient.Interfaces;
@@ -41,6 +42,14 @@ namespace Gold.Redis.Tests.Integration.Pipelines
             var responseParser = new JsonResponseParser();
 
             var configuration = RedisConfigurationLoader.GetConfiguration();
+
+            //For the CI to run without the need of configuration file
+            if (configuration.Pipeline == null)
+            {
+                configuration.UsePiplining = true;
+                configuration.Pipeline = new RedisPipelineConfiguration();
+            }
+
             var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), parsers);
             var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
             var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
@@ -125,7 +134,7 @@ namespace Gold.Redis.Tests.Integration.Pipelines
             pipelineStopwatch.Stop();
 
             singleStopwatch.Start();
-            var singleResults =await Task.WhenAll(singleExecutedTasks);
+            var singleResults = await Task.WhenAll(singleExecutedTasks);
             singleStopwatch.Stop();
 
             var pipelineElapsed = pipelineStopwatch.Elapsed;
