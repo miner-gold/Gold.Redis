@@ -14,7 +14,7 @@ namespace Gold.Redis.HighLevelClient.Db
         private readonly IRedisGeneralOperationsDb _generalOperationsDb;
 
         public RedisDb(
-            IRedisGeneralOperationsDb generalOperationsDb, 
+            IRedisGeneralOperationsDb generalOperationsDb,
             IRedisKeysDb keysDb,
             IRedisSetDb setDb)
         {
@@ -28,6 +28,7 @@ namespace Gold.Redis.HighLevelClient.Db
         public async Task<IEnumerable<string>> GetMatchingKeys(string pattern = "*") => await _generalOperationsDb.GetMatchingKeys(pattern);
         public async Task<bool> DeleteKey(string key) => await _generalOperationsDb.DeleteKey(key);
         public async Task<bool> FlushDb(bool isAsync = false) => await _generalOperationsDb.FlushDb(isAsync);
+        public async Task<bool> Ping() => await _generalOperationsDb.Ping();
 
         public async Task<bool> SetKey<T>(string key, T value, TimeSpan? expirySpan = null, KeyAssertion assertion = KeyAssertion.Any) =>
             await _keysDb.SetKey(key, value, expirySpan, assertion);

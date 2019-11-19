@@ -54,6 +54,13 @@ namespace Gold.Redis.HighLevelClient.Db
             return response?.Response == Constants.OkResponse;
         }
 
+        public async Task<bool> Ping()
+        {
+            var command = new PingCommand();
+            var response = await _commandExecutor.Execute<SimpleStringResponse>(command);
+            return response?.Response == "PONG";
+        }
+
         public async Task<bool> IsKeyExists(string key)
         {
             var command = new KeyExistsCommand
