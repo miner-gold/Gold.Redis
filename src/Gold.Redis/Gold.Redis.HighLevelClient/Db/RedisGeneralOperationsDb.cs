@@ -7,7 +7,6 @@ using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Commands.General;
 using Gold.Redis.HighLevelClient.Models.Commands.Keys;
 using Gold.Redis.HighLevelClient.Models.Commands.Search;
-using Gold.Redis.HighLevelClient.Models.Utils;
 using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.HighLevelClient.Db
@@ -52,6 +51,13 @@ namespace Gold.Redis.HighLevelClient.Db
             };
             var response = await _commandExecutor.Execute<SimpleStringResponse>(command);
             return response?.Response == Constants.OkResponse;
+        }
+
+        public async Task<bool> Ping()
+        {
+            var command = new PingCommand();
+            var response = await _commandExecutor.Execute<SimpleStringResponse>(command);
+            return response?.Response == "PONG";
         }
 
         public async Task<bool> IsKeyExists(string key)

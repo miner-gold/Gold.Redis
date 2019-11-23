@@ -39,9 +39,10 @@ namespace Gold.Redis.Tests.Integration
 
             _configuration = RedisConfigurationLoader.GetConfiguration();
             var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), responseParser);
+            var socketConnector = new SocketConnectorWithRetries(_configuration);
             var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
-            var connectionContainer = new SocketsConnectionsContainer(_configuration, authenticator);
-            _client = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
+            var connectionContainer = new SocketsConnectionsContainer(_configuration, authenticator, socketConnector);
+            _client = new RedisCommandHandler(connectionContainer, socketCommandExecutor, _configuration);
         }
 
         [Test]
@@ -126,7 +127,7 @@ namespace Gold.Redis.Tests.Integration
             var command = "PING";
 
             //Act
-            Assert.ThrowsAsync<AuthenticationException>(async() =>await _client.ExecuteCommand<ErrorResponse>(command));
+            Assert.ThrowsAsync<AuthenticationException>(async () => await _client.ExecuteCommand<ErrorResponse>(command));
         }
     }
 }

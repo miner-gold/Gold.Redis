@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.Models.Utils;
@@ -23,25 +22,26 @@ namespace Gold.Redis.HighLevelClient.Db
             _setDb = setDb;
         }
 
-        #region Db Operations
-        public async Task<bool> FlushDb(bool isAsync = false) => await _generalOperationsDb.FlushDb(isAsync);
-        #endregion
-
-        #region Keys Operations
-        public async Task<bool> DeleteKey(string key) => await _generalOperationsDb.DeleteKey(key);
-        public async Task<bool> SetKey<T>(string key, T value, TimeSpan? expirySpan = null, KeyAssertion assertion = KeyAssertion.Any) =>
-            await _keysDb.SetKey(key, value, expirySpan, assertion);
-        public async Task<T> Get<T>(string key) => await _keysDb.Get<T>(key);
+        #region General db operations
         public async Task<bool> IsKeyExists(string key) => await _generalOperationsDb.IsKeyExists(key);
         public async Task<bool> SetKeyExpire(string key, TimeSpan span) => await _generalOperationsDb.SetKeyExpire(key, span);
         public async Task<IEnumerable<string>> GetMatchingKeys(string pattern = "*") => await _generalOperationsDb.GetMatchingKeys(pattern);
-
+        public async Task<bool> DeleteKey(string key) => await _generalOperationsDb.DeleteKey(key);
+        public async Task<bool> FlushDb(bool isAsync = false) => await _generalOperationsDb.FlushDb(isAsync);
+        public async Task<bool> Ping() => await _generalOperationsDb.Ping();
         #endregion
 
-        #region  Set Operations
+        #region Key operations
+        public async Task<bool> SetKey<T>(string key, T value, TimeSpan? expirySpan = null, KeyAssertion assertion = KeyAssertion.Any) =>
+            await _keysDb.SetKey(key, value, expirySpan, assertion);
+        public async Task<T> Get<T>(string key) => await _keysDb.Get<T>(key);
+        #endregion
+
+        #region Sets operations
 
         public async Task<bool> SetAdd<T>(string key, T item) => await _setDb.SetAdd<T>(key, item);
-        public async Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items) => await _setDb.SetAddMultiple<T>(key, items);
+
+        public async Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items) => await _setDb.SetAddMultiple(key, items);
         public async Task<int> SetCount(string key) => await _setDb.SetCount(key);
         public async Task<IEnumerable<T>> SetDiff<T>(string firstKey, params string[] keys) =>
             await _setDb.SetDiff<T>(firstKey, keys);

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gold.Redis.Common;
+using Gold.Redis.Common.Configuration;
 using Gold.Redis.HighLevelClient.Db;
 using Gold.Redis.HighLevelClient.Interfaces;
 using Gold.Redis.HighLevelClient.ResponseParsers;
@@ -35,12 +37,14 @@ namespace Gold.Redis.Tests.Integration.DbCommands
             var responseParser = new JsonResponseParser();
 
             var configuration = RedisConfigurationLoader.GetConfiguration();
+            
             var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), parsers);
+            var socketConnector = new SocketConnectorWithRetries(configuration);
             var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
-            var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
-            var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
+            var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator, socketConnector);
+            var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor, configuration);
 
-            var commandExecutor = new RedisCommandsExecutor(lowLevelClient);
+            var commandExecutor = new RedisSingleCommandExecutor(lowLevelClient);
             var commandExecutorHelper = new RedisCommandExecutorHelper(commandExecutor, responseParser);
             var redisScannerHelper = new RedisScanner(commandExecutor);
 

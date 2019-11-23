@@ -17,5 +17,11 @@ namespace Gold.Redis.HighLevelClient.Interfaces
         /// <param name="isAsync">Indicate if the operation should be preformed in async manner (require redis 4.0.0 or higher)</param>
         /// <returns></returns>
         Task<bool> FlushDb(bool isAsync = false);
+
+        /// <summary>
+        /// Tries to ping the redis db
+        /// </summary>
+        /// <returns>true if the response is PONG false otherwise</returns>
+        Task<bool> Ping();
     }
 }

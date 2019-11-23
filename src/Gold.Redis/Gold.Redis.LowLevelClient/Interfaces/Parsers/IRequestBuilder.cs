@@ -2,6 +2,6 @@
 {
     public interface IRequestBuilder
     {
-        string Build(string request);
+        string Build(params string[] requests);
     }
 }
