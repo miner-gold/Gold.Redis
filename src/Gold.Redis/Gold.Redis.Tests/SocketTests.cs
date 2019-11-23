@@ -3,21 +3,24 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Gold.Redis.LowLevelClient.Communication;
 using Gold.Redis.LowLevelClient.Interfaces;
+using Gold.Redis.LowLevelClient.Interfaces.Communication;
 using Gold.Redis.Tests.Helpers;
 using Moq;
 using NUnit.Framework;
 
 namespace Gold.Redis.Tests
 {
-    [TestFixture]
+    [TestFixture(Category = "Socket")]
     public class SocketTests
     {
         private Mock<IRedisAuthenticator> _authenticator;
+        private Mock<ISocketConnector> _connector;
 
         [SetUp]
         public void SetUp()
         {
             _authenticator = new Mock<IRedisAuthenticator>();
+            _connector = new Mock<ISocketConnector>();
         }
 
         [Test]
@@ -38,7 +41,7 @@ namespace Gold.Redis.Tests
             }
 
             //Assert
-            connectionsContainerMock.Verify(container => container.FreeSocket(socket), Times.Once);
+            connectionsContainerMock.Verify(container => container.FreeSocket(socketContainer), Times.Once);
         }
 
         [Test]
@@ -47,8 +50,8 @@ namespace Gold.Redis.Tests
             // Arrange
             var configuration = RedisConfigurationLoader.GetConfiguration();
             configuration.MaxConnections = 1;
-            _authenticator.Setup(auth => auth.TryAuthenticate(It.IsAny<Socket>(), It.IsAny<string>())).ReturnsAsync(true);
-            var connectionContainer = new SocketsConnectionsContainer(configuration, _authenticator.Object);
+            _authenticator.Setup(auth => auth.TryAuthenticate(It.IsAny<ISocketContainer>(), It.IsAny<string>())).ReturnsAsync(true);
+            var connectionContainer = new SocketsConnectionsContainer(configuration, _authenticator.Object, _connector.Object);
 
             // Act
             var socketContainer = await connectionContainer.GetSocket();
@@ -67,8 +70,8 @@ namespace Gold.Redis.Tests
             // Arrange
             var configuration = RedisConfigurationLoader.GetConfiguration();
             configuration.MaxConnections = 1;
-            _authenticator.Setup(auth => auth.TryAuthenticate(It.IsAny<Socket>(), It.IsAny<string>())).ReturnsAsync(true);
-            var connectionContainer = new SocketsConnectionsContainer(configuration, _authenticator.Object);
+            _authenticator.Setup(auth => auth.TryAuthenticate(It.IsAny<ISocketContainer>(), It.IsAny<string>())).ReturnsAsync(true);
+            var connectionContainer = new SocketsConnectionsContainer(configuration, _authenticator.Object, _connector.Object);
 
             // Act
             var socketContainer = await connectionContainer.GetSocket();

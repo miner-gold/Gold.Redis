@@ -38,9 +38,10 @@ namespace Gold.Redis.Tests.Integration.Pipelines
 
             var configuration = RedisConfigurationLoader.GetConfiguration();
             var socketCommandExecutor = new SocketCommandExecutor(new RequestBuilder(), parsers);
+            var socketConnector = new SocketConnectorWithRetries(configuration);
             var authenticator = new RedisSocketAuthenticator(socketCommandExecutor);
-            var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator);
-            var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor);
+            var connectionContainer = new SocketsConnectionsContainer(configuration, authenticator, socketConnector);
+            var lowLevelClient = new RedisCommandHandler(connectionContainer, socketCommandExecutor, configuration);
 
             _workRunner = new PipelineExecutorWorkRunner(lowLevelClient);
         }
