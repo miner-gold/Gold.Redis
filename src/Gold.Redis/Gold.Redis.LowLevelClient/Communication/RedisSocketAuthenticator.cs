@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Gold.Redis.Common;
 using Gold.Redis.LowLevelClient.Interfaces;
+using Gold.Redis.LowLevelClient.Interfaces.Communication;
 using Gold.Redis.LowLevelClient.Responses;
 
 namespace Gold.Redis.LowLevelClient.Communication
@@ -16,12 +17,12 @@ namespace Gold.Redis.LowLevelClient.Communication
             _socketCommandExecutor = socketCommandExecutor;
         }
 
-        public async Task<bool> TryAuthenticate(Socket connectionSocket, string password)
+        public async Task<bool> TryAuthenticate(ISocketContainer socket, string password)
         {
             var authCommand = "AUTH " + password;
             try
             {
-                var response = await _socketCommandExecutor.ExecuteCommand<SimpleStringResponse>(connectionSocket, authCommand);
+                var response = await _socketCommandExecutor.ExecuteCommand<SimpleStringResponse>(socket, authCommand);
                 return response.Response == Constants.OkResponse;
             }
             catch (Exception ex)

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Gold.Redis.LowLevelClient.Interfaces;
+using Gold.Redis.LowLevelClient.Interfaces.Communication;
 using Gold.Redis.LowLevelClient.Interfaces.Parsers;
 using Gold.Redis.LowLevelClient.Responses;
 
@@ -23,14 +24,14 @@ namespace Gold.Redis.LowLevelClient.Communication
             _responseParser = parser;
         }
 
-        public async Task<IEnumerable<T>> ExecuteCommands<T>(Socket socket, params string[] commands)
+        public async Task<IEnumerable<T>> ExecuteCommands<T>(ISocketContainer socket, params string[] commands)
             where T : Response
         {
             var responses = new T[commands.Length];
             var arraySegment = GetCommandArraySegment<T>(commands);
             await socket.SendAsync(arraySegment, SocketFlags.None);
 
-            using (var networkStream = new NetworkStream(socket))
+            using (var networkStream = new NetworkStream(socket.Socket))
             using (var streamReader = new StreamReader(networkStream))
             {
                 for (int i = 0; i < commands.Length; i++)
@@ -52,12 +53,12 @@ namespace Gold.Redis.LowLevelClient.Communication
             return responses;
         }
 
-        public async Task<T> ExecuteCommand<T>(Socket socket, string command) where T : Response
+        public async Task<T> ExecuteCommand<T>(ISocketContainer socket, string command) where T : Response
         {
             var arraySegment = GetCommandArraySegment<T>(command);
             await socket.SendAsync(arraySegment, SocketFlags.None);
 
-            using (var networkStream = new NetworkStream(socket))
+            using (var networkStream = new NetworkStream(socket.Socket))
             using (var streamReader = new StreamReader(networkStream))
             {
                 var response = await _responseParser.Parse(streamReader);

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Gold.Redis.LowLevelClient.Interfaces
+namespace Gold.Redis.LowLevelClient.Interfaces.Communication
 {
     public interface IConnectionsContainer : IDisposable
     {
         Task<ISocketContainer> GetSocket();
 
-        void FreeSocket(Socket socket);
+        void FreeSocket(ISocketContainer socket);
     }
 }
