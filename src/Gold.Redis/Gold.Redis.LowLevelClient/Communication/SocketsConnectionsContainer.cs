@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,23 +7,30 @@ using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using Gold.Redis.Common.Configuration;
+using Gold.Redis.Common.Exceptions;
+using Gold.Redis.Common.Utils;
 using Gold.Redis.LowLevelClient.Interfaces;
+using Gold.Redis.LowLevelClient.Interfaces.Communication;
 
 namespace Gold.Redis.LowLevelClient.Communication
 {
     public class SocketsConnectionsContainer : IConnectionsContainer
     {
         private readonly RedisConnectionConfiguration _configuration;
+        private readonly ISocketConnector _connector;
         private readonly IRedisAuthenticator _authenticator;
-        private readonly ConcurrentDictionary<Socket, ManualResetEventSlim> _sockets;
+        private readonly ConcurrentDictionary<ISocketContainer, ManualResetEventSlim> _sockets;
 
         public SocketsConnectionsContainer(
             RedisConnectionConfiguration configuration,
-            IRedisAuthenticator authenticator)
+            IRedisAuthenticator authenticator,
+            ISocketConnector connector)
         {
             _configuration = configuration;
             _authenticator = authenticator;
-            _sockets = new ConcurrentDictionary<Socket, ManualResetEventSlim>();
+            _connector = connector;
+            _sockets = new ConcurrentDictionary<ISocketContainer, ManualResetEventSlim>(
+                new SocketContainerEqualityComparer());
         }
         public async Task<ISocketContainer> GetSocket()
         {
@@ -30,19 +38,19 @@ namespace Gold.Redis.LowLevelClient.Communication
             openPair.Value.Wait();
             openPair.Value.Reset();
 
-            if (openPair.Key.Connected)
+            if (openPair.Key.Socket.Connected)
             {
-                return new SocketContainer(openPair.Key, this);
+                return new SocketContainer(openPair.Key.Socket, this);
             }
             return new SocketContainer(await Connect(openPair.Key), this);
         }
 
-        public void FreeSocket(Socket socket)
+        public void FreeSocket(ISocketContainer socket)
         {
             _sockets[socket].Set();
         }
 
-        private async Task<KeyValuePair<Socket, ManualResetEventSlim>> GetFreeToUsePair()
+        private async Task<KeyValuePair<ISocketContainer, ManualResetEventSlim>> GetFreeToUsePair()
         {
             if (_sockets.Count < _configuration.MaxConnections)
             {
@@ -60,9 +68,10 @@ namespace Gold.Redis.LowLevelClient.Communication
             return await WaitUntilSocketIsFree();
         }
 
-        private async Task<Socket> Connect(Socket socket)
+        private async Task<Socket> Connect(ISocketContainer socket)
         {
-            await socket.ConnectAsync(_configuration.Host, _configuration.Port);
+            await _connector.ConnectSocket(socket);
+
             if (!string.IsNullOrEmpty(_configuration.Password))
             {
                 if (!await _authenticator.TryAuthenticate(socket, _configuration.Password))
@@ -70,10 +79,10 @@ namespace Gold.Redis.LowLevelClient.Communication
                         $"Host = {_configuration.Host}");
             }
 
-            return socket;
+            return socket.Socket;
         }
 
-        private async Task<KeyValuePair<Socket, ManualResetEventSlim>> WaitUntilSocketIsFree()
+        private async Task<KeyValuePair<ISocketContainer, ManualResetEventSlim>> WaitUntilSocketIsFree()
         {
             var cancellationToken = new CancellationTokenSource();
             var freeSocket = await Task.WhenAny(_sockets.Select(socket => Task.Run(() =>
@@ -88,10 +97,7 @@ namespace Gold.Redis.LowLevelClient.Communication
         private void AddSocket()
         {
             _sockets.TryAdd(
-                new Socket(
-                    AddressFamily.InterNetwork,
-                    SocketType.Stream,
-                    ProtocolType.Tcp),
+                new SocketContainer(this),
                 new ManualResetEventSlim(true));
         }
 
@@ -99,7 +105,7 @@ namespace Gold.Redis.LowLevelClient.Communication
         {
             foreach (var pair in _sockets)
             {
-                pair.Key.Dispose();
+                pair.Key.Socket.Dispose();
                 pair.Value.Dispose();
             }
         }
