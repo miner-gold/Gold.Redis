@@ -23,7 +23,7 @@ namespace Gold.Redis.HighLevelClient.Db
             _scanner = scanner;
         }
 
-        public async Task<bool> SetAdd<T>(string key, T item) => await SetAddMultiple<T>(key, new List<T>() {item});
+        public async Task<bool> SetAdd<T>(string key, T item) => await SetAddMultiple<T>(key, new List<T>() { item });
 
         public async Task<bool> SetAddMultiple<T>(string key, IEnumerable<T> items)
         {
@@ -172,7 +172,7 @@ namespace Gold.Redis.HighLevelClient.Db
             return await _commandExecutor.ExecuteIntResponseCommand(command);
         }
 
-        public async Task<IEnumerable<T>> SetScan<T>(string key, string pattern = null, int? countHint = null)
+        public async IAsyncEnumerable<T> SetScan<T>(string key, string pattern = null, int? countHint = null)
         {
             var command = new SetScanCommand
             {
@@ -180,8 +180,11 @@ namespace Gold.Redis.HighLevelClient.Db
                 CountHint = countHint,
                 Match = pattern
             };
-            var response = await _scanner.ExecuteFullScan(command);
-            return response.Select(item => _parser.Parse<T>(item));
+            var response = _scanner.ExecuteFullScan(command);
+            await foreach (var i in response)
+            {
+                yield return _parser.Parse<T>(i);
+            }
         }
     }
 }

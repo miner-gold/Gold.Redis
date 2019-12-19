@@ -157,7 +157,7 @@ namespace Gold.Redis.HighLevelClient.Interfaces
         /// <param name="pattern"></param>
         /// <param name="countHint"></param>
         /// <returns>All of the item that match the given pattern in the set</returns>
-        Task<IEnumerable<T>> SetScan<T>(string key, string pattern = null, int? countHint = null);
+        IAsyncEnumerable<T> SetScan<T>(string key, string pattern = null, int? countHint = null);
 
     }
 }
