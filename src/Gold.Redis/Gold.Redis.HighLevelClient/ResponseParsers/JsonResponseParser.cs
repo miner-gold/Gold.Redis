@@ -1,23 +1,17 @@
 ﻿using System.IO;
 using System.Text;
+using System.Text.Json;
 using Gold.Redis.HighLevelClient.Interfaces;
-using Newtonsoft.Json;
+
 
 namespace Gold.Redis.HighLevelClient.ResponseParsers
 {
     public class JsonResponseParser : IStringResponseParser
     {
-        private readonly JsonSerializer _serializer;
-        public JsonResponseParser(JsonSerializerSettings settings = null)
+        private readonly JsonSerializerOptions _options;
+        public JsonResponseParser(JsonSerializerOptions options = null)
         {
-            if (settings != null)
-            {
-                _serializer = JsonSerializer.Create(settings);
-            }
-            else
-            {
-                _serializer = JsonSerializer.CreateDefault();
-            }
+            _options = options;
         }
         public T Parse<T>(string response)
         {
@@ -30,11 +24,7 @@ namespace Gold.Redis.HighLevelClient.ResponseParsers
                 response = "\"" + response + "\"";
             }
 
-            using (var stringReader = new StringReader(response))
-            using (var jsonReader = new JsonTextReader(stringReader))
-            {
-                return _serializer.Deserialize<T>(jsonReader);
-            }
+            return JsonSerializer.Deserialize<T>(response, _options);
         }
 
         public string Stringify<T>(T item)
@@ -47,13 +37,7 @@ namespace Gold.Redis.HighLevelClient.ResponseParsers
             if (item is char itemChar)
                 return itemChar.ToString();
 
-            StringBuilder sb = new StringBuilder();
-            using (var sr = new StringWriter(sb))
-            using (var jsonTextWriter = new JsonTextWriter(sr))
-            {
-                _serializer.Serialize(jsonTextWriter, item, item.GetType());
-                return sb.ToString();
-            }
+            return JsonSerializer.Serialize<T>(item, _options);
         }
     }
 }
