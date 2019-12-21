@@ -119,32 +119,5 @@ namespace Gold.Redis.Tests.Integration.Pipelines
             (await _pipelineClient.GetSetMembers<int>("some_set")).Should().BeEquivalentTo(new[] { 123 });
             (await _pipelineClient.GetSetMembers<string>("some_value")).Should().BeEquivalentTo(new[] { "123", "678" });
         }
-
-        [Test]
-        public async Task PreformTest_ShouldDo500PingUsingPipeline_FasterThanWithoutPipelined()
-        {
-            //Arrange
-            var pipelineTasks = Enumerable.Range(0, 1000).Select(_ => _pipelineClient.Ping());
-            var singleExecutedTasks = Enumerable.Range(0, 1000).Select(_ => _pipelineClient.Ping());
-            var pipelineStopwatch = new Stopwatch();
-            var singleStopwatch = new Stopwatch();
-
-            //Act
-            pipelineStopwatch.Start();
-            var pipeResults = await Task.WhenAll(pipelineTasks);
-            pipelineStopwatch.Stop();
-
-            singleStopwatch.Start();
-            var singleResults = await Task.WhenAll(singleExecutedTasks);
-            singleStopwatch.Stop();
-
-            var pipelineElapsed = pipelineStopwatch.Elapsed;
-            var singleElapsed = singleStopwatch.Elapsed;
-
-            //Assert
-            pipelineElapsed.Should().BeLessThan(singleElapsed);
-            pipeResults.All(i => i).Should().BeTrue();
-            singleResults.All(i => i).Should().BeTrue();
-        }
     }
 }
