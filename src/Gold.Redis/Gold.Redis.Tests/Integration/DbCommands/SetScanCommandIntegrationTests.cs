@@ -20,11 +20,11 @@ namespace Gold.Redis.Tests.Integration.DbCommands
 
 
             //Act
-            var enumaerableList = await _client.SetScan<int>(setKey, null, 400).ToListAsync();
+            var results = await _client.SetScan<int>(setKey, null, 400).ToListAsync();
 
             //Assert
-            results.Count.Should().Be(enumaerableList.Count);
-            results.Should().BeEquivalentTo(enumaerableList);
+            results.Count.Should().Be(setItems.Count);
+            results.Should().BeEquivalentTo(setItems);
         }
 
         [TestCase("6Empire6", 666)]
