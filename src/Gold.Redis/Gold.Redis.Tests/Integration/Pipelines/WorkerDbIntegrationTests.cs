@@ -124,8 +124,8 @@ namespace Gold.Redis.Tests.Integration.Pipelines
         public async Task PreformTest_ShouldDo500PingUsingPipeline_FasterThanWithoutPipelined()
         {
             //Arrange
-            var pipelineTasks = Enumerable.Range(0, 500).Select(_ => _pipelineClient.Ping());
-            var singleExecutedTasks = Enumerable.Range(0, 500).Select(_ => _pipelineClient.Ping());
+            var pipelineTasks = Enumerable.Range(0, 1000).Select(_ => _pipelineClient.Ping());
+            var singleExecutedTasks = Enumerable.Range(0, 1000).Select(_ => _pipelineClient.Ping());
             var pipelineStopwatch = new Stopwatch();
             var singleStopwatch = new Stopwatch();
 
