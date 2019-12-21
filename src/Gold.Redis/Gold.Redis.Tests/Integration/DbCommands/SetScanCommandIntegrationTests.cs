@@ -20,11 +20,11 @@ namespace Gold.Redis.Tests.Integration.DbCommands
 
 
             //Act
-            var items = (await _client.SetScan<int>(setKey, null, 400)).ToList();
+            var results = await _client.SetScan<int>(setKey, null, 400).ToListAsync();
 
             //Assert
-            items.Count().Should().Be(setItems.Count);
-            items.Should().BeEquivalentTo(setItems);
+            results.Count.Should().Be(setItems.Count);
+            results.Should().BeEquivalentTo(setItems);
         }
 
         [TestCase("6Empire6", 666)]
@@ -38,10 +38,10 @@ namespace Gold.Redis.Tests.Integration.DbCommands
             await _client.SetAddMultiple(setKey, setItems);
 
             //Act
-            var items = await _client.SetScan<string>(setKey, "*" + pattern + "*", 1000);
+            var items = await _client.SetScan<string>(setKey, "*" + pattern + "*", 1000).ToListAsync();
 
             //Assert
-            items.Count().Should().Be(numberOfPatternItems);
+            items.Count.Should().Be(numberOfPatternItems);
         }
 
         private List<string> GetRandomizedSetItemsWithPattern(int numberOfPatternedItems, int totalItems, string pattern)

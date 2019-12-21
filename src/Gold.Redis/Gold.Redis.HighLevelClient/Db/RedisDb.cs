@@ -64,8 +64,7 @@ namespace Gold.Redis.HighLevelClient.Db
         public async Task<IEnumerable<T>> UnionSets<T>(params string[] keys) => await _setDb.UnionSets<T>(keys);
         public async Task<int> UnionSetsStore(string destinationKey, params string[] keys) =>
             await _setDb.UnionSetsStore(destinationKey, keys);
-        public async Task<IEnumerable<T>> SetScan<T>(string key, string pattern = null, int? countHint = null) =>
-            await _setDb.SetScan<T>(key, pattern, countHint);
+        public IAsyncEnumerable<T> SetScan<T>(string key, string pattern = null, int? countHint = null) =>  _setDb.SetScan<T>(key, pattern, countHint);
         #endregion
     }
 }

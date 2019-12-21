@@ -16,30 +16,28 @@ namespace Gold.Redis.HighLevelClient.Db
             _commandExecutor = commandExecutor;
         }
 
-        public async Task<HashSet<string>> ExecuteFullScan(ScanCommandBase command)
+        public async IAsyncEnumerable<string> ExecuteFullScan(ScanCommandBase command)
         {
-            var result = new HashSet<string>();
             int cursor = 0;
             do
             {
                 command.Cursor = cursor;
                 var response = await _commandExecutor.Execute<ArrayResponse>(command);
                 if (response?.Responses == null)
-                    return null;
+                    yield break;
 
                 var responsesList = response.Responses.ToList();
                 if (responsesList.Count < 2)
-                    return null;
+                    yield break;
 
                 cursor = int.Parse((responsesList[0] as BulkStringResponse).Response);
                 foreach (var innerResponse in (responsesList[1] as ArrayResponse).Responses)
                 {
-                    result.Add((innerResponse as BulkStringResponse).Response);
+                   yield return (innerResponse as BulkStringResponse).Response;
                 }
             }
             while (cursor != 0);
 
-            return result;
         }
     }
 }
