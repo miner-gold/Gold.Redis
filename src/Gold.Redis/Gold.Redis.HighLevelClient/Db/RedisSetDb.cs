@@ -172,7 +172,7 @@ namespace Gold.Redis.HighLevelClient.Db
             return await _commandExecutor.ExecuteIntResponseCommand(command);
         }
 
-        public async IAsyncEnumerable<T> SetScan<T>(string key, string pattern = null, int? countHint = null)
+        public IAsyncEnumerable<T> SetScan<T>(string key, string pattern = null, int? countHint = null)
         {
             var command = new SetScanCommand
             {
@@ -180,11 +180,7 @@ namespace Gold.Redis.HighLevelClient.Db
                 CountHint = countHint,
                 Match = pattern
             };
-            var response = _scanner.ExecuteFullScan(command);
-            await foreach (var i in response)
-            {
-                yield return _parser.Parse<T>(i);
-            }
+            return _scanner.ExecuteFullScan(command).Select(i => _parser.Parse<T>(i));
         }
     }
 }

@@ -14,22 +14,17 @@ namespace Gold.Redis.Tests.Integration.DbCommands
         public async Task SetScan_ShouldReturnAllItemsOfTheSet_WhenNoPatternApplied()
         {
             //Arrange
-            var results = new List<int>();
             var setKey = Guid.NewGuid().ToString();
             var setItems = Enumerable.Range(1, 1000).ToList();
             await _client.SetAddMultiple(setKey, setItems);
 
 
             //Act
-            var enumaerableList =  _client.SetScan<int>(setKey, null, 400);
-            
-            await foreach(var i in enumaerableList)
-            {
-                results.Add(i);
-            }
+            var enumaerableList = await _client.SetScan<int>(setKey, null, 400).ToListAsync();
+
             //Assert
-            results.Count.Should().Be(setItems.Count);
-            results.Should().BeEquivalentTo(setItems);
+            results.Count.Should().Be(enumaerableList.Count);
+            results.Should().BeEquivalentTo(enumaerableList);
         }
 
         [TestCase("6Empire6", 666)]
@@ -38,20 +33,15 @@ namespace Gold.Redis.Tests.Integration.DbCommands
         public async Task SetScan_ShouldReturnItemsThatBeginsInPattern_WhenPatternApplied(string pattern, int numberOfPatternItems)
         {
             //Arrange
-            var results = new List<string>();
             var setKey = Guid.NewGuid().ToString();
             var setItems = GetRandomizedSetItemsWithPattern(numberOfPatternItems, 10000, pattern);
             await _client.SetAddMultiple(setKey, setItems);
 
             //Act
-            var items =  _client.SetScan<string>(setKey, "*" + pattern + "*", 1000);
-            await foreach(var i in items)
-            {
-                results.Add(i);
-            }
+            var items = await _client.SetScan<string>(setKey, "*" + pattern + "*", 1000).ToListAsync();
 
             //Assert
-            results.Count.Should().Be(numberOfPatternItems);
+            items.Count.Should().Be(numberOfPatternItems);
         }
 
         private List<string> GetRandomizedSetItemsWithPattern(int numberOfPatternedItems, int totalItems, string pattern)
